@@ -15,6 +15,15 @@ class Copies(unittest.TestCase):
   (child/'public/data/entity.json').write_text('changed')
   self.assertEqual(v.inventory(self.source),original)
   with self.assertRaises(ValueError):v.fork(self.source,'2026-10-01-campus')
+ def test_old_root_dependencies_are_not_used_for_new_lock(self):
+  (v.ROOT/'package-lock.json').write_text('old')
+  (self.source/'package-lock.json').write_text('new')
+  with self.assertRaises(ValueError):v.dependency_cache(self.source)
+ def test_changed_parent_requires_explicit_review(self):
+  v.seal(self.source);before=v.CATALOG.read_text()
+  (self.source/'public/data/entity.json').write_text('unexpected')
+  with self.assertRaises(ValueError):v.fork(self.source,'2026-11-01-campus')
+  self.assertEqual(v.CATALOG.read_text(),before)
  def test_invalid_copy_does_not_change_latest(self):
   (self.source/'linked').symlink_to('/tmp');before=v.CATALOG.read_text()
   with self.assertRaises(ValueError):v.fork(self.source,'2026-11-01-campus')

@@ -45,6 +45,8 @@ npm start
 
 打开 <http://127.0.0.1:4317/>。根目录命令读取 `versions/catalog.json` 中的 `latest`，画布仍覆盖整页，侧栏悬浮于地图之上。`npm run dev` 与静态服务共用 4317 端口，二者不要同时运行。
 
+若新版本修改了依赖锁文件，请在该版本目录重新执行 `npm ci`；发布工具会拒绝借用不匹配的根依赖缓存。
+
 单独运行任一副本也可以：进入其目录，执行 `npm ci && npm run build`，然后 `python3 scripts/serve.py --port 4330`。它只读取自己目录中的素材。缺少完整数据的新 clone 请先阅读 [数据说明](docs/DATA.md)，不要用公开简化包覆盖完整版本。
 
 ## 创建下一个版本
@@ -56,7 +58,7 @@ python3 scripts/versions.py seal
 python3 scripts/versions.py fork 2026-10-01-campus
 ```
 
-`fork` 逐文件复制并校验 SHA-256，拒绝覆盖已有目录和素材链接；成功后才原子更新 `latest`。依赖安装、构建缓存和预览历史不属于素材，不复制进新版本。旧版本保留原文件。随后只修改新副本；构建、固定预览和 Sites 都自动跟随 `latest`。
+`fork` 先验证父节点已有封存清单，再逐文件复制并校验 SHA-256，拒绝覆盖已有目录和素材链接；成功后才原子更新 `latest`。依赖安装、构建缓存和预览历史不属于素材，不复制进新版本。旧版本保留原文件。随后只修改新副本；构建、固定预览和 Sites 都自动跟随 `latest`。
 
 ```sh
 python3 scripts/versions.py list

@@ -6,15 +6,17 @@ from versions import selected
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 PREVIEW=ROOT/'.preview/current'
 PUBLIC=selected()/'public'
-DATA=json.loads((PUBLIC/'data/panoramas-online.json').read_text())
-ASSETS={n['asset_id'] for n in DATA['nodes']}
 class Handler(http.server.SimpleHTTPRequestHandler):
  def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(PREVIEW if PREVIEW.exists() else selected()/'dist/client'),**kwargs)
  def do_GET(self):
   u=urllib.parse.urlsplit(self.path)
   if u.path=='/api/panorama':
    asset=urllib.parse.parse_qs(u.query).get('id',[''])[0]
-   if asset not in ASSETS:self.send_error(404,'Unknown public panorama asset');return
+   try:
+    data=json.loads((pathlib.Path(self.directory)/'data/panoramas-online.json').read_text())
+    allowed={n['asset_id'] for n in data['nodes']}
+   except (OSError,ValueError,KeyError):self.send_error(503,'Panorama index unavailable');return
+   if asset not in allowed:self.send_error(404,'Unknown public panorama asset');return
    try:
     source='https://navigate.ust.hk/path/api/app/assets/panorama/id?id='+asset
     with urllib.request.urlopen(source,timeout=40) as r:

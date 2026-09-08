@@ -27,6 +27,16 @@ def digest(path):
 
 def inventory(root):
     return {str(p.relative_to(root)):{'bytes':p.stat().st_size,'sha256':digest(p)} for p in sorted(files(root))}
+def dependency_cache(root):
+    own=root/'node_modules'
+    if own.is_dir():return own
+    if (root/'package-lock.json').read_bytes()!=(ROOT/'package-lock.json').read_bytes():
+        raise ValueError('Install this version dependencies first: cd '+str(root)+' && npm ci')
+    a=json.loads((root/'package.json').read_text());b=json.loads((ROOT/'package.json').read_text())
+    if any(a.get(k)!=(b.get(k)) for k in ['dependencies','devDependencies']):
+        raise ValueError('Version dependency declarations differ from root cache; run npm ci in '+str(root))
+    return ROOT/'node_modules'
+
 def seal(root):
     items=inventory(root)
     (root/'INVENTORY.local.json').write_text(json.dumps({'version':root.name,'files':items},indent=2)+'\n')
@@ -36,7 +46,11 @@ def fork(source,name):
     if not re.fullmatch(r'[a-z0-9][a-z0-9-]{2,79}',name):raise ValueError('Use a dated lowercase version ID')
     target=ROOT/'versions'/name
     if target.exists():raise ValueError('Version already exists; never overwrite a checkpoint')
-    before=seal(source)
+    stamp=source/'INVENTORY.local.json'
+    if stamp.exists():
+        before=json.loads(stamp.read_text())['files']
+        if inventory(source)!=before:raise ValueError('Parent checkpoint changed; review and explicitly seal the editable latest version before copying')
+    else:before=seal(source)
     temporary=ROOT/'versions'/('.copy-'+name)
     if temporary.exists():raise ValueError('Previous partial copy exists: '+str(temporary))
     temporary.mkdir()
@@ -60,7 +74,10 @@ def main():
     if a.command=='list':print(json.dumps(catalog(),indent=2))
     elif a.command=='path':print(root)
     elif a.command=='fork':fork(root,a.id)
-    elif a.command=='seal':print('Sealed',len(seal(root)),'files in',root)
+    elif a.command=='seal':
+        if root.name!=catalog()['latest'] or (json.loads((root/'VERSION.json').read_text()).get('status')=='archived' and (root/'INVENTORY.local.json').exists()):
+            raise ValueError('Archived checkpoint is sealed; fork it instead of rewriting its inventory')
+        print('Sealed',len(seal(root)),'files in',root)
     elif a.command=='verify':
         expected=json.loads((root/'INVENTORY.local.json').read_text())['files'];actual=inventory(root)
         if actual!=expected:
@@ -70,6 +87,7 @@ def main():
     else:
         args=a.args[1:] if a.args[:1]==['--'] else a.args
         if not args:raise ValueError('Provide a command to run in the selected version')
+        if args[:2]==['npm','run']:dependency_cache(root)
         raise SystemExit(subprocess.run(args,cwd=root).returncode)
 if __name__=='__main__':
     try:main()

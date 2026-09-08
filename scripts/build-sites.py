@@ -2,7 +2,7 @@
 """Build only catalog.latest; keep full runtime bytes separate from the small Sites archive."""
 import argparse, hashlib, json, mimetypes, shutil, subprocess, tempfile
 from pathlib import Path
-from versions import ROOT, selected
+from versions import ROOT, selected, dependency_cache
 
 def files(directory):
     return sorted(p for p in directory.rglob('*') if p.is_file() and p.name!='.DS_Store' and not p.name.startswith('._') and '__pycache__' not in p.parts)
@@ -15,8 +15,7 @@ def main():
     source=selected(); profile=json.loads((source/'public/data/dataset-profile.json').read_text())['id']
     if profile!='full-local':raise ValueError('Private full Sites deployment requires the latest full-local checkpoint')
     local=ROOT/'.local';local.mkdir(exist_ok=True)
-    deps=source/'node_modules'
-    if not deps.exists():deps=ROOT/'node_modules'
+    deps=dependency_cache(source)
     if not (deps/'.bin/vinext').exists():raise ValueError('Install locked dependencies with npm ci first')
     with tempfile.TemporaryDirectory(prefix='sites-build-',dir=local) as temp:
         stage=Path(temp)

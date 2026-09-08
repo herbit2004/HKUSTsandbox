@@ -17,7 +17,7 @@ python3 scripts/serve.py --port 4317
 
 公开政府底图包可按其条款部署。完整本地包含未核实再分发许可的校方资产，部署前必须先取得相应权利；其本地保存不等于公开托管授权。
 
-1. 按 README 安装数据，执行 `npm ci && npm run build`。
+1. 进入选中副本目录，按其 README 准备数据，执行 `npm ci && npm run build`。以下静态服务命令都在该副本目录执行。
 2. 将 `dist/client/` 的**内容**放到站点根目录，例如 `/srv/hkust/public/`。完整配置需要约 1.8 GiB 资产空间，另留解压、构建、前后两个快照空间；历史 38 GiB 快照无需部署。
 3. 使用支持 `.glb`、JSON、JS 和纹理文件的静态服务器。下面是可直接调整域名/证书后的 Nginx server 片段：
 
