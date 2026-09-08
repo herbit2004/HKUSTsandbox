@@ -9,7 +9,7 @@
 | 数据 | 获取方式 | 包含与限制 |
 |---|---|---|
 | 公开政府底图 `government-baseline-v1` | 下述带 SHA-256 校验的 Release 下载命令 | 292 个真实摄影瓦片及政府地形。保留源时代外观；不含校方平面、校徽、照片、现状重建楼或全量实体功能，不能当作完整现状校园。 |
-| 完整本地数据 `full-local` | 本机已迁移保留；其他机器需拥有相应权利的本地导出包 | 约 1.8 GiB 运行资源，含现有实体、楼层、细节模型及参考资料。未核实校方资产的公开再分发许可，因此不上传此包。 |
+| 完整本地数据 `full-local` | 本机已迁移保留；其他机器需拥有相应权利的本地导出包 | 约 1.8 GiB 运行资源，含现有实体、楼层、细节模型及参考资料。用户已授权用于仅所有者访问的 Sites；不上传 GitHub 公共仓库或 Release。 |
 
 代码 clone 不自带全部大模型。公开包下载后可离线运行基础三维地图；完整本地资料不降级为公开底图。详见 [数据准备与来源](docs/DATA.md)、[第三方权利边界](THIRD_PARTY.md)。
 
@@ -53,7 +53,7 @@ dist/ .preview/ node_modules/ 本地产物、历史快照与依赖；不入 Git
 
 默认支持**域名根路径**静态部署，完整本地服务还提供按需官方全景代理。可执行命令、Nginx 示例、资源需求与数据权利边界见 [部署说明](docs/DEPLOYMENT.md)。本项目没有自动部署 GitHub Pages，也不把 Release 下载地址当浏览器 CDN。
 
-Sites 使用独立的公开数据构建：`npm run build:sites`。它校验政府底图包，在临时构建目录生成 `out/`，不会替换本机 `public/`、`dist/` 或固定 4317 预览；Sites 配置记录在 `.openai/hosting.json`。这个线上数据范围不等于本机完整校园模型。
+Sites 的完整私有版本使用 `npm run build:sites`，读取本机 `full-local`，保持模型、纹理和室内资源的原始字节，支持全景代理。仅拥有公开数据时使用 `npm run build:sites -- --profile government-baseline`。二者在临时目录构建到 `out/`，均不替换本机 `public/`、`dist/` 或固定 4317 预览。站点为 <https://hkust-sandbox.herbit2004.chatgpt.site>，完整资源只允许所有者访问；配置在 `.openai/hosting.json`，打包与验证见 [部署说明](docs/DEPLOYMENT.md)。
 
 后续所有修改在本仓库完成：修改 → 适用检查 → 构建 → `python3 scripts/preview-update.py --existing-build` 原子切换固定预览 → 实际检查 → Git 提交/推送。不要再在旧课程目录维护第二份工程。具体要求见 [AGENTS.md](AGENTS.md) 和 [迁移说明](docs/MIGRATION.md)。
 

@@ -44,13 +44,15 @@ curl -I http://127.0.0.1:8080/
 
 ## ChatGPT Sites
 
-`npm run build:sites` 从当前仓库源码和校验过的 `government-baseline-v1` 构建纯静态 `out/`。所用临时目录在 `.local/`，构建后删除；不维护另一份工作副本，也不覆盖完整本地数据或 4317 快照。构建会验证所有 319 项资源的字节、SHA-256 和公开 profile，并拒绝夹带本地校徽、照片、校园图目录。
+用户于 2026-09-08 明确要求 Sites 与本机完整效果一致，授权把 `full-local` 运行资源部署到仅所有者访问的既有站点 <https://hkust-sandbox.herbit2004.chatgpt.site>。此授权不包含把完整素材上传 GitHub/Release 或开放公众访问。
 
-`.openai/hosting.json` 绑定本项目的唯一 Sites 项目，并选择 `out/`。在完成构建、提交当前源码并推送 Sites 源码仓库后，用 Sites 托管流程打包 `out/`、保存版本、部署并检查最终状态。源码也持续推送原 GitHub 仓库。凭据只用于单次命令授权，不进入文件、Git remote 或仓库配置。
+`npm run build:sites` 从当前仓库源码及本机 `full-local` 构建。公开数据子集另用 `npm run build:sites -- --profile government-baseline`。临时目录在 `.local/`，构建后删除；不维护另一份工作副本，不覆盖 `public/`、`dist/` 或 4317 快照。
 
-初次部署保持仅所有者可访问。此版本没有 `/api/panorama`、校方室内资料或照片派生现状建筑；页面展示公开底图范围。不能把它描述为完整版上线或全校视觉质量验收完成。
+产物在 `out/dist/client` 和 `out/dist/server/index.js`。前端沿用本地静态导出；一个独立的小型 Worker 处理原有 allowlist 全景代理和超大文件流式响应，不运行 Node/RSC 服务。Sites 插件提供部署元数据。完整资源逐文件核对 SHA-256，忽略操作系统元数据。超过底层 25 MiB 单文件限制的模型按 16 MiB 分段，Worker 在原 URL 输出相同字节，保留原文件的 SHA-256、MIME、长度、HEAD 和 Range；不降纹理分辨率、不修改模型内容。
 
-截至 2026-09-08，[Sites 官方说明](https://learn.chatgpt.com/docs/sites) 公布每站 D1 10 GB、R2 无固定容量上限，但所有 Sites 合计仍受套餐限制；接近上限会提示，超限可能限制新建、增存储或高用量网站继续公开。公开文档未明确给出本账号的站点数、静态包、单文件、月流量、请求量和额度刷新周期，也未说明流量与模型额度的换算。当前静态部署未启用 D1 或 R2；一次包上传或部署成功不能证明其他容量和流量上限。
+构建后运行 `node --test scripts/sites-worker.test.mjs`。核对 Sites 当前访问仅包含所有者，再提交当前源码、推送 Sites 源码仓库并记录完整 SHA；GitHub 仍只推送代码和可公开文档。使用 Sites 插件的 `scripts/package-site.sh "$PWD/out" "$PWD/.local/hkust-sites-full-local.tar.gz"` 打包；macOS 在该命令前设置 `COPYFILE_DISABLE=1`，避免把 Finder 扩展元数据放入包。保存该版本、私有部署并检查终态，随后核对线上 profile、关键资源和大模型响应。凭据仅用于单次命令，不进入文件或 Git 配置。构建/部署回执保存在 `.local/sites-*.json`，不作为全校逐栋视觉验收通过的依据。
+
+截至 2026-09-08，[Sites 官方说明](https://learn.chatgpt.com/docs/sites) 公布每站 D1 10 GB、R2 无固定容量上限，但所有 Sites 合计仍受套餐限制；接近上限会提示，超限可能限制新建、增存储或高用量网站继续公开。公开文档未明确给出本账号的站点数、静态包、月流量、请求量和额度刷新周期，也未说明流量与模型额度的换算。[底层 Workers 静态文件限制](https://developers.cloudflare.com/workers/platform/limits/) 为单文件 25 MiB；这不等于整个 Sites 项目的容量上限。此部署不需要 D1 或 R2，一次包上传或部署成功也不能证明其他容量和流量上限。
 
 ## 按需全景
 
