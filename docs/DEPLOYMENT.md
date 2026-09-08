@@ -52,6 +52,16 @@ Release 是安装包下载渠道，不是模型 CDN；安装脚本下载并核�
 
 2026-09-08 07:22 UTC 的干净 `npm ci` 官方响应报告 11 个受影响包：8 high、2 moderate、1 low；迁移保留原锁文件，未将其判为安全通过。主要包括直接 RSC 依赖、vinext 的 image-size，以及 Vite、Undici、Sharp、ws 和 esbuild 工具链。
 
+| 受影响包/链路 | 依赖位置与实际边界 |
+|---|---|
+| `react-server-dom-webpack` | 直接生产依赖，供 RSC 框架路径使用；当前 Python/纯静态站点不运行 Node RSC 请求处理。 |
+| `image-size` ← `vinext` | 生产依赖链中的图像解析工具；不运行于本次 Python 静态文件服务。处理不可信图像或启用框架服务前仍需评估。 |
+| `vite` ← `vinext` peer / 开发命令 | 构建和开发服务器使用；lock 中的 production 标记不代表静态浏览器会执行其 Node 服务端。 |
+| `undici`、`sharp`、`ws`、`esbuild` ← Miniflare/Cloudflare/shadcn 等 | 主要为构建、开发和可选数据/QA工具的传递依赖；不由当前静态 HTTP 请求路径调用。 |
+| `vinext`、`miniflare`、`@cloudflare/vite-plugin`、`wrangler` | 汇总中包含从上述依赖继承的告警，不能将11个受影响包计作11项独立、已证实可远程利用的问题。 |
+
+实际适用性取决于启用的服务、输入和部署方式；本次没有完成全面安全审查。公开数据安装工具使用 Python 标准库下载、校验并限制解包路径；本次核对没有发现它调用上述受影响 Node 包。
+
 本说明的 Python/静态部署只提供 `dist/client` 文件，不运行 Node RSC 或开发服务器。不要把 `npm run dev` / Vite / Cloudflare dev 直接当生产公网服务；公开运行这些服务或处理不可信图像前需单独升级、审查适用告警并重验。
 
 具体官方告警入口：[RSC](https://github.com/advisories/GHSA-wx67-qw84-cm4g)、[image-size](https://github.com/advisories/GHSA-w3rx-r6r6-pgpr)、[Vite](https://github.com/advisories/GHSA-fx2h-pf6j-xcff)、[Undici](https://github.com/advisories/GHSA-4cwx-7wf7-3272)、[Sharp](https://github.com/advisories/GHSA-f88m-g3jw-g9cj)、[ws](https://github.com/advisories/GHSA-96hv-2xvq-fx4p)、[esbuild](https://github.com/advisories/GHSA-g7r4-m6w7-qqqr)。这不是完整适用性安全审查；后续修复需与框架和数据工具兼容性一起验证。
