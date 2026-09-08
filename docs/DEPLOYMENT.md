@@ -51,9 +51,9 @@ curl -I http://127.0.0.1:8080/
 - `out/runtime/`：该版完整前端、模型、纹理、实体、室内资源与校验索引。
 - `out/release.json`：原始 URL 到 SHA-256/大小/MIME 的映射，记录版本 ID。
 - `out/dist/server/index.js`：Sites Worker，处理 R2 原始字节流、HEAD/Range/ETag 和 allowlist 全景代理。
-- `out/dist/client/`：首次 R2 导入期间的工作站点回退。完整清单激活后，未列入最新清单的 URL 返回 404，不会混用回退版。
+- `out/dist/client/`：仅一个内部运行说明文件。Sites 优先服务匹配的静态文件，因此这里禁止放置 index、模型或 data，防止静态文件遮蔽 R2 的最新内容。
 
-实际工具已确认：单次 Sites 部署归档上传上限 **512 MiB**；完整压缩包约 1.45 GB，不能直接上传。底层静态文件上限 **25 MiB**，而最大 iVillage GLB 为 57,847,228 bytes。因此资源使用 Sites R2，保持原始 GLB 和图片，不分辨率降级或重压模型。网站包本身只包含小型 Worker 和首次回退页面；R2 是必需绑定 `CAMPUS_ASSETS`，不需要 D1。
+实际工具已确认：单次 Sites 部署归档上传上限 **512 MiB**；完整压缩包约 1.45 GB，不能直接上传。底层静态文件上限 **25 MiB**，而最大 iVillage GLB 为 57,847,228 bytes。因此资源使用 Sites R2，保持原始 GLB 和图片，不分辨率降级或重压模型。网站包本身只包含小型 Worker 和一个内部运行说明文件；R2 是必需绑定 `CAMPUS_ASSETS`，不需要 D1。
 
 发布流程：
 

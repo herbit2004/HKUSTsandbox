@@ -28,7 +28,7 @@ def main():
         copy(ROOT/'.openai/hosting.json',stage/'.openai/hosting.json')
         inventory={str(p.relative_to(stage/'public')):{'bytes':p.stat().st_size,'sha256':digest(p)} for p in files(stage/'public')}
         # Disposable dependency cache only. No version or material links are created.
-        (stage/'node_modules').symlink_to(deps,target_is_directory=True)
+        if deps!=ROOT/'node_modules':(stage/'node_modules').symlink_to(deps,target_is_directory=True)
         subprocess.run(['npm','run','check'],cwd=stage,check=True)
         subprocess.run(['npm','run','build'],cwd=stage,check=True)
         client=stage/'dist/client'
@@ -41,11 +41,10 @@ def main():
         publication=stage/'publication';publication.mkdir()
         client.rename(publication/'runtime')
         client.mkdir()
-        # Preserve the last working baseline only during the first storage import.
-        # Once an active manifest exists, the Worker never serves this fallback.
-        fallback=ROOT/'.local/sites-out-previous'
-        if (fallback/'index.html').is_file():shutil.copytree(fallback,client,dirs_exist_ok=True)
-        else:(client/'index.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><title>HKUST</title><main><h1>HKUST</h1><p>Campus resources are being synchronized. Please refresh shortly.</p></main></html>')
+        # Sites serves matching static assets before the Worker. Never put a
+        # competing index, model or data file here: all live routes come from R2.
+        (client/'_sites').mkdir()
+        (client/'_sites/worker.txt').write_text('HKUST runtime assets are served by the versioned R2 manifest.\n')
         subprocess.run(['npx','--no-install','vite','build','--config','scripts/sites-worker.vite.mjs'],cwd=stage,check=True)
         if not (stage/'dist/server/index.js').is_file():raise ValueError('Worker missing')
         (stage/'dist').rename(publication/'dist')

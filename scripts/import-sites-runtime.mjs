@@ -24,7 +24,7 @@ async function api(endpoint,initFactory){
   }catch(error){if(attempt===5)throw error;await new Promise(r=>setTimeout(r,Math.min(20000,1000*2**attempt)));}
  }
 }
-async function pool(items,run,concurrency=8){let index=0;await Promise.all(Array.from({length:concurrency},async()=>{while(index<items.length){const item=items[index++];await run(item);}}));}
+async function pool(items,run,concurrency=32){let index=0;await Promise.all(Array.from({length:concurrency},async()=>{while(index<items.length){const item=items[index++];await run(item);}}));}
 const entries=[...unique.values()];
 let checked=0,lastLog=0;
 async function missing(){
@@ -54,7 +54,7 @@ if(needed.length)await upload(needed.shift());
 await pool(needed,upload,16);
 const absent=await missing();if(absent.length)throw new Error(absent.length+' resources still missing; current release was not changed');
 assertLatest();
-const result=await api('activate',()=>({method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(manifest)}));
+const result=await api('activate',()=>{assertLatest();return {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(manifest)};});
 if(result.release!==manifest.release)throw new Error('Unexpected activated release');
 const report={version:manifest.version,release:manifest.release,routes:Object.keys(manifest.routes).length,objects:entries.length,bytesUploaded,completedAt:new Date().toISOString()};
 fs.writeFileSync(new URL('../.local/sites-import-validation.json',import.meta.url),JSON.stringify(report,null,2)+'\n');
