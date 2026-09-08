@@ -12,3 +12,5 @@
 G25 全校统一证据标准与原验收结果完整保留。迁移完成只代表工程/运行/公开分发整理完成，不代表全校质量通过。验收 JSON 的 `publishedRuntimeAcceptance` 是运行注记的持久来源，Markdown 渲染会保留它；历史物理身份记录仍受禁止静默删除的保护。
 
 公开 Git 仅跟踪项目代码、配置、精选文档和资产获取清单。校方照片/平面/派生外观及用户原始截图/逐字需求证据保留本机，不作未经许可的公开附件。公开政府数据 Release 不是本机 full-local 包。
+
+仅同步已有验收说明至 Markdown：`python3 scripts/sync-building-quality-state.py --render-only`。不带该参数的完整清单同步仍保留防止删除历史身份的断言；不得绕过断言或删除原记录。

@@ -33,3 +33,8 @@ work/
 
 # Historical raw registry input is local data, not source code.
 /scripts/registry-v3/input-entity-registry.json
+
+# Generated historical QA/source reports stay with the complete local workspace.
+/docs/*.json
+/docs/*.txt
+/docs/source-evidence-*/

@@ -7,3 +7,5 @@
 - 固定预览为 http://127.0.0.1:4317/ 。检查现有监听与实际目录后操作；使用 scripts/preview-update.py 原子切换，并复用已有浏览器标签。
 - 部分历史数据脚本需要已丢失的临时原始输入，见 docs/DATA.md。缺失时明确报出，不能用旧快照或生成假资料代替。
 - 运行说明保存在 visual-quality-status.json 的 publishedRuntimeAcceptance。生成验收 Markdown 时必须保留该说明及原逐栋证据；不得删除历史服务名记录以绕过同步保护。
+
+仅同步已有验收说明至 Markdown：`python3 scripts/sync-building-quality-state.py --render-only`。不带该参数的完整清单同步仍保留防止删除历史身份的断言；不得绕过断言或删除原记录。

@@ -47,3 +47,11 @@ curl -I http://127.0.0.1:8080/
 纯静态服务不能实现 `/api/panorama`。公开 baseline 没有全景功能。完整本地 `serve.py` / Vite 服务提供限定已知公开节点 ID 的代理；离线时模型仍可运行，全景请求可能失败。需要全景的自托管环境可在 Nginx 的 `/api/panorama` 位置反代到同机、仅 loopback 监听的 `serve.py`，其他路径仍使用静态文件。该代理最长等待 40 秒、最大图片 32 MiB，应配置相应超时，勿任意放宽 URL allowlist。
 
 Release 是安装包下载渠道，不是模型 CDN；安装脚本下载并核验后，在同一站点本地提供模型。
+
+## 本次安装发现的依赖告警
+
+2026-09-08 07:22 UTC 的干净 `npm ci` 官方响应报告 11 个受影响包：8 high、2 moderate、1 low；迁移保留原锁文件，未将其判为安全通过。主要包括直接 RSC 依赖、vinext 的 image-size，以及 Vite、Undici、Sharp、ws 和 esbuild 工具链。
+
+本说明的 Python/静态部署只提供 `dist/client` 文件，不运行 Node RSC 或开发服务器。不要把 `npm run dev` / Vite / Cloudflare dev 直接当生产公网服务；公开运行这些服务或处理不可信图像前需单独升级、审查适用告警并重验。
+
+具体官方告警入口：[RSC](https://github.com/advisories/GHSA-wx67-qw84-cm4g)、[image-size](https://github.com/advisories/GHSA-w3rx-r6r6-pgpr)、[Vite](https://github.com/advisories/GHSA-fx2h-pf6j-xcff)、[Undici](https://github.com/advisories/GHSA-4cwx-7wf7-3272)、[Sharp](https://github.com/advisories/GHSA-f88m-g3jw-g9cj)、[ws](https://github.com/advisories/GHSA-96hv-2xvq-fx4p)、[esbuild](https://github.com/advisories/GHSA-g7r4-m6w7-qqqr)。这不是完整适用性安全审查；后续修复需与框架和数据工具兼容性一起验证。
