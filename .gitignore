@@ -4,6 +4,7 @@ node_modules/
 .vinext/
 .wrangler/
 dist/
+/out/
 .preview/
 .local/
 __pycache__/

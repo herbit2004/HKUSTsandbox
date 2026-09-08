@@ -53,6 +53,8 @@ dist/ .preview/ node_modules/ 本地产物、历史快照与依赖；不入 Git
 
 默认支持**域名根路径**静态部署，完整本地服务还提供按需官方全景代理。可执行命令、Nginx 示例、资源需求与数据权利边界见 [部署说明](docs/DEPLOYMENT.md)。本项目没有自动部署 GitHub Pages，也不把 Release 下载地址当浏览器 CDN。
 
+Sites 使用独立的公开数据构建：`npm run build:sites`。它校验政府底图包，在临时构建目录生成 `out/`，不会替换本机 `public/`、`dist/` 或固定 4317 预览；Sites 配置记录在 `.openai/hosting.json`。这个线上数据范围不等于本机完整校园模型。
+
 后续所有修改在本仓库完成：修改 → 适用检查 → 构建 → `python3 scripts/preview-update.py --existing-build` 原子切换固定预览 → 实际检查 → Git 提交/推送。不要再在旧课程目录维护第二份工程。具体要求见 [AGENTS.md](AGENTS.md) 和 [迁移说明](docs/MIGRATION.md)。
 
 ```sh

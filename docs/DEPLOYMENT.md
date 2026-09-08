@@ -40,7 +40,17 @@ python3 -m http.server 8080 --bind 127.0.0.1 --directory dist/client
 curl -I http://127.0.0.1:8080/
 ```
 
-模型和 JSON 使用 `/models/...`、`/data/...` 等绝对 URL，**不支持未经改造的 `/HKUSTsandbox/` 子路径部署**。不要直接套 GitHub Project Pages 默认 URL。完整站点约 1.8 GiB，超过 GitHub Pages 1 GB 站点限制；本次仅公开代码与可下载数据，没有创建托管站点。
+模型和 JSON 使用 `/models/...`、`/data/...` 等绝对 URL，**不支持未经改造的 `/HKUSTsandbox/` 子路径部署**。不要直接套 GitHub Project Pages 默认 URL。完整站点约 1.8 GiB，超过 GitHub Pages 1 GB 站点限制；GitHub 目前提供源码与可下载数据，Sites 部署见下节。
+
+## ChatGPT Sites
+
+`npm run build:sites` 从当前仓库源码和校验过的 `government-baseline-v1` 构建纯静态 `out/`。所用临时目录在 `.local/`，构建后删除；不维护另一份工作副本，也不覆盖完整本地数据或 4317 快照。构建会验证所有 319 项资源的字节、SHA-256 和公开 profile，并拒绝夹带本地校徽、照片、校园图目录。
+
+`.openai/hosting.json` 绑定本项目的唯一 Sites 项目，并选择 `out/`。在完成构建、提交当前源码并推送 Sites 源码仓库后，用 Sites 托管流程打包 `out/`、保存版本、部署并检查最终状态。源码也持续推送原 GitHub 仓库。凭据只用于单次命令授权，不进入文件、Git remote 或仓库配置。
+
+初次部署保持仅所有者可访问。此版本没有 `/api/panorama`、校方室内资料或照片派生现状建筑；页面展示公开底图范围。不能把它描述为完整版上线或全校视觉质量验收完成。
+
+截至 2026-09-08，[Sites 官方说明](https://learn.chatgpt.com/docs/sites) 公布每站 D1 10 GB、R2 无固定容量上限，但所有 Sites 合计仍受套餐限制；接近上限会提示，超限可能限制新建、增存储或高用量网站继续公开。公开文档未明确给出本账号的站点数、静态包、单文件、月流量、请求量和额度刷新周期，也未说明流量与模型额度的换算。当前静态部署未启用 D1 或 R2；一次包上传或部署成功不能证明其他容量和流量上限。
 
 ## 按需全景
 

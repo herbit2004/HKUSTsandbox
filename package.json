@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "vinext dev",
     "build": "vinext build",
+    "build:sites": "python3 scripts/build-sites.py",
     "start": "python3 scripts/serve.py --port 4317",
     "lint": "oxlint",
     "format": "oxfmt",
