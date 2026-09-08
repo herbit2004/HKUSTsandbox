@@ -1,73 +1,79 @@
 # HKUSTsandbox
 
-香港科技大学清水湾校园的 Three.js 交互沙盘：地形、摄影网格、建筑实体、原位楼层与地图浏览。An independent workspace for the HKUST Clear Water Bay campus sandbox.
+HKUST 清水湾校区的 Three.js 交互沙盘。模型、地形、楼宇、楼层、房间、Lift 和参考资料属于同一个版本，地图是主要界面。
 
-**全校逐栋视觉验收仍未完成。** 初始画面、构建成功或加载计数不代表每栋已达到主学术大楼标准。统一要求见 [GOAL.md](GOAL.md)，状态见 [逐栋验收表](docs/source-evidence-v4/building-quality/visual-quality-status.md)。
+**全校逐栋视觉验收仍未完成。** 迁移、构建成功或上线不代表每栋已达到主学术大楼的标准。验收要求见 [GOAL.md](GOAL.md)，逐栋证据保存在各版本自己的 `docs/source-evidence-v4/building-quality/` 中。
 
-## 先选择数据范围
+## 版本目录
 
-| 数据 | 获取方式 | 包含与限制 |
-|---|---|---|
-| 公开政府底图 `government-baseline-v1` | 下述带 SHA-256 校验的 Release 下载命令 | 292 个真实摄影瓦片及政府地形。保留源时代外观；不含校方平面、校徽、照片、现状重建楼或全量实体功能，不能当作完整现状校园。 |
-| 完整本地数据 `full-local` | 本机已迁移保留；其他机器需拥有相应权利的本地导出包 | 约 1.8 GiB 运行资源，含现有实体、楼层、细节模型及参考资料。用户已授权用于仅所有者访问的 Sites；不上传 GitHub 公共仓库或 Release。 |
+```text
+HKUSTsandbox/
+├── versions/
+│   ├── catalog.json                  # latest 指向唯一构建和部署版本
+│   ├── 2025-03-27-government-source/  # 原始政府摄影底图，配套资料注明整理日期
+│   └── 2026-09-08-campus/             # 当前完整修补版
+│       ├── VERSION.json              # 项目日期、来源日期、父版本与边界
+│       ├── app/ components/ hooks/ lib/
+│       ├── public/                   # 本版本全部运行资源与楼宇/室内信息
+│       ├── source-geodata/            # 本版本政府源资料
+│       ├── source-pathadvisor/        # 本版本校方地图/室内原始资料
+│       ├── source-photo-references/   # 本版本参考照片
+│       ├── docs/                     # 本版本设计、来源和验收证据
+│       ├── scripts/ sites/ assets/    # 数据工具、Worker 和数据包目录
+│       └── package.json + lockfile    # 可独立安装和构建
+├── scripts/                          # 版本选择、快照、预览和发布管理
+├── docs/                             # 仓库级版本与部署说明
+├── .openai/hosting.json               # 唯一 Sites 项目配置
+└── .local/ .preview/ out/             # 本机缓存、预览与发布产物，不入 Git
+```
 
-代码 clone 不自带全部大模型。公开包下载后可离线运行基础三维地图；完整本地资料不降级为公开底图。详见 [数据准备与来源](docs/DATA.md)、[第三方权利边界](THIRD_PARTY.md)。
+每份版本目录中的素材是独立普通文件，不链接到另一版本或共用素材目录。`2025-03-27` 是政府摄影底图的修订日期；不是这套应用、楼宇索引或所有照片的采集日期。历史底图节点的重建方式和资料时间边界见 [版本说明](docs/VERSIONS.md)。
 
-## 安装与运行
+GitHub 保存每版源码和可公开文档。完整素材已保存在本机对应目录，但受来源许可限制，不进入公共 GitHub 或 Release；拥有相应权限的完整版本可私下转移。代码 clone **不等于**下载了完整模型。
 
-需要 Node.js **22.13 或更高版本**、npm、Python **3.9+**；浏览器需支持 WebGL。迁移验证使用 Node 25.8.1 / npm 11.11.0 / Python 3.9。
+## 本机运行
+
+需要 Node.js ≥22.13、npm、Python ≥3.11，以及支持 WebGL 的浏览器。当前机器已经保留全部素材。
 
 ```sh
-git clone https://github.com/herbit2004/HKUSTsandbox.git
-cd HKUSTsandbox
-python3 scripts/data-package.py fetch
 npm ci
 npm run check
 npm run build
 python3 scripts/preview-update.py --existing-build
-python3 scripts/serve.py --port 4317
+npm start
 ```
 
-打开 <http://127.0.0.1:4317/>。数据已在本机时跳过 `fetch`；它拒绝覆盖已有运行数据。`npm run dev` 在相同 4317 端口启动开发服务器，与静态预览二选一，避免同时占用端口。数据 profile 与部分空间描述在构建时载入，换数据包后必须重新构建。
+打开 <http://127.0.0.1:4317/>。根目录命令读取 `versions/catalog.json` 中的 `latest`，画布仍覆盖整页，侧栏悬浮于地图之上。`npm run dev` 与静态服务共用 4317 端口，二者不要同时运行。
 
-现有完整版工作副本的唯一根目录：`/Users/herbit/Desktop/code/HKUSTsandbox`。双击 `启动校园地图.command` 可运行已构建版本。左键旋转、右键锚定平移、滚轮缩放；详细使用与现有模型边界见 [完整本地使用说明](README.zh-CN.md)。
+单独运行任一副本也可以：进入其目录，执行 `npm ci && npm run build`，然后 `python3 scripts/serve.py --port 4330`。它只读取自己目录中的素材。缺少完整数据的新 clone 请先阅读 [数据说明](docs/DATA.md)，不要用公开简化包覆盖完整版本。
 
-## 目录
+## 创建下一个版本
 
-```text
-app/ components/ hooks/ lib/  应用、场景、交互与界面
-scripts/                     构建、数据处理、受控验证与运维
-assets/                      公开数据版本、下载地址、大小和校验和
-public/                      已安装运行资产；仅少量自编工具入 Git
-source-geodata/              本地政府源资料及处理工具
-source-pathadvisor/          本地校方原始资料及处理工具
-source-photo-references/     本地参考照片；不公开再分发
-docs/                        设计、来源、QA；大部分证据附件仅本地
-.local/                      迁移校验、缓存、日志、数据导入/导出
-dist/ .preview/ node_modules/ 本地产物、历史快照与依赖；不入 Git
-```
-
-未重新组织已有模型 URL 和证据目录，避免破坏实体关系。历史截图与逐字需求附件本地保留，公开文档中的这些链接不表示附件也随 clone 发布。
-
-## 构建、部署与更新
-
-默认支持**域名根路径**静态部署，完整本地服务还提供按需官方全景代理。可执行命令、Nginx 示例、资源需求与数据权利边界见 [部署说明](docs/DEPLOYMENT.md)。本项目没有自动部署 GitHub Pages，也不把 Release 下载地址当浏览器 CDN。
-
-Sites 的完整私有版本使用 `npm run build:sites`，读取本机 `full-local`，保持模型、纹理和室内资源的原始字节，支持全景代理。仅拥有公开数据时使用 `npm run build:sites -- --profile government-baseline`。二者在临时目录构建到 `out/`，均不替换本机 `public/`、`dist/` 或固定 4317 预览。站点为 <https://hkust-sandbox.herbit2004.chatgpt.site>，完整资源只允许所有者访问；配置在 `.openai/hosting.json`，打包与验证见 [部署说明](docs/DEPLOYMENT.md)。
-
-后续所有修改在本仓库完成：修改 → 适用检查 → 构建 → `python3 scripts/preview-update.py --existing-build` 原子切换固定预览 → 实际检查 → Git 提交/推送。不要再在旧课程目录维护第二份工程。具体要求见 [AGENTS.md](AGENTS.md) 和 [迁移说明](docs/MIGRATION.md)。
+先将当前节点验收、记录清楚，再创建完整副本：
 
 ```sh
-git status --short
-git add <本次已审查的文件>
-git commit -m "Describe the change"
-git push origin main
+python3 scripts/versions.py seal
+python3 scripts/versions.py fork 2026-10-01-campus
 ```
 
-公开资产更新先检查来源许可，再创建新的不可变数据版本、校验文件和 Release。不要将完整本地校方照片/模型包或历史快照加入 Git。
+`fork` 逐文件复制并校验 SHA-256，拒绝覆盖已有目录和素材链接；成功后才原子更新 `latest`。依赖安装、构建缓存和预览历史不属于素材，不复制进新版本。旧版本保留原文件。随后只修改新副本；构建、固定预览和 Sites 都自动跟随 `latest`。
 
-## 来源与许可
+```sh
+python3 scripts/versions.py list
+python3 scripts/versions.py --version 2026-09-08-campus verify
+```
 
-公开底图使用香港特别行政区政府地政总署的 3D Visualisation Map、土木工程拓展署 LiDAR DTM（相关处理范围和日期随包记录）。政府数据依 [CSDI 使用条款](https://portal.csdi.gov.hk/csdi-webpage/doc/TNC) 提供，保留政府与来源署名。数据修订日期不是拍摄日期。
+`verify` 将当前文件与该副本上次 `seal` 的完整本机清单比较。修改后的版本需完成适用验证再重新 `seal`；它是文件完整性检查，不是建筑视觉验收。
 
-项目代码未新增统一开源许可证；第三方代码遵循各自许可证，第三方数据、校方照片/平面/校徽不因仓库公开获得额外授权。详情见 [THIRD_PARTY.md](THIRD_PARTY.md)。
+## 部署
+
+私有站点：<https://hkust-sandbox.herbit2004.chatgpt.site>。只发布最新副本的运行内容，旧版本目录及原始资料档案不上站。
+
+```sh
+npm run build:sites
+node --test scripts/sites-worker.test.mjs
+```
+
+完整运行文件位于 `out/runtime/`，小型 Sites Worker 部署包位于 `out/dist/`。模型、贴图和室内资源保持原始字节，使用 Sites R2 提供；不为上传限制降低画质。上传完成并核对全部对象后才切换线上资源清单。具体流程、全景代理和部署边界见 [部署说明](docs/DEPLOYMENT.md)。
+
+工作根固定为 `/Users/herbit/Desktop/code/HKUSTsandbox`，默认分支 `main`。后续迭代提交/推送本仓库，但只暂存审查过的代码和可公开文档。见 [工作约定](AGENTS.md)、[第三方来源](THIRD_PARTY.md)、[政府源更新核查](docs/GOVERNMENT-SOURCE-UPDATE-20260908.md)。

@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import sys
 from datetime import datetime, timezone
+from versions import selected
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
@@ -15,7 +16,7 @@ args = parser.parse_args()
 if not args.existing_build:
     subprocess.run(['npm', 'run', 'check'], cwd=root, check=True)
     subprocess.run(['npm', 'run', 'build'], cwd=root, check=True)
-source = root / 'dist/client'
+source = selected() / 'dist/client'
 if not (source / 'index.html').is_file():
     raise SystemExit('No completed static build found')
 base = root / '.preview'

@@ -1,0 +1,34 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const port=Number(process.env.HKUST_CDP_PORT||9222);
+const pages=await (await fetch(`http://127.0.0.1:${port}/json`)).json();
+const page=pages.find(item=>item.type==='page'&&item.url.startsWith('http://127.0.0.1:4317/'));
+if(!page)throw new Error('Fixed preview page missing');
+const socket=new WebSocket(page.webSocketDebuggerUrl);
+await new Promise((resolve,reject)=>{socket.addEventListener('open',resolve,{once:true});socket.addEventListener('error',reject,{once:true});});
+let nextId=0;const pending=new Map();
+socket.addEventListener('message',event=>{const message=JSON.parse(String(event.data));if(!message.id||!pending.has(message.id))return;const target=pending.get(message.id);pending.delete(message.id);message.error?target.reject(new Error(JSON.stringify(message.error))):target.resolve(message.result);});
+const send=(method,params={})=>new Promise((resolve,reject)=>{const id=++nextId;pending.set(id,{resolve,reject});socket.send(JSON.stringify({id,method,params}));});
+const evaluate=async expression=>(await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true,userGesture:true})).result.value;
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+// Reverse the final U73 orbit gesture, returning from saved angle 4 to angle 3.
+await send('Input.dispatchMouseEvent',{type:'mousePressed',x:1030,y:475,button:'left',buttons:1,clickCount:1});
+await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:720,y:500,button:'left',buttons:1});
+await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:720,y:500,button:'left',buttons:0,clickCount:1});
+await sleep(9000);
+const before=await evaluate(`({scene:JSON.parse(document.querySelector('.atlas-world').dataset.sceneState),pick:document.querySelector('.atlas-world').dataset.pickState||''})`);
+const beforeShot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+const screenshot='docs/screenshots/v4/ivillage-multiangle-u73/floater-pick-before.png';
+await fs.writeFile(path.join(root,screenshot),Buffer.from(beforeShot.data,'base64'));
+const pixel=[1325,266];
+await send('Input.dispatchMouseEvent',{type:'mousePressed',x:pixel[0],y:pixel[1],button:'left',buttons:1,clickCount:1});
+await send('Input.dispatchMouseEvent',{type:'mouseReleased',x:pixel[0],y:pixel[1],button:'left',buttons:0,clickCount:1});
+await sleep(120);
+const after=await evaluate(`({scene:JSON.parse(document.querySelector('.atlas-world').dataset.sceneState),pick:document.querySelector('.atlas-world').dataset.pickState||''})`);
+const report={status:'captured',checkedAt:new Date().toISOString(),runtime:'http://127.0.0.1:4317/',screenshot,pixel,before,after,method:'Production Three.js pick at the visible isolated dark/green fragment after returning to U73 angle 3; pick state captured before any programmatic camera flight can settle.',limitations:['A single pixel resolves only its front-most visible hit.']};
+await fs.writeFile(path.join(root,'docs/source-evidence-v4/ivillage-remnants/ivillage-floater-pick-u73.json'),JSON.stringify(report,null,2)+'\n');
+console.log(JSON.stringify({pixel,pick:after.pick,selectedBefore:before.scene.selectedId,selectedAfter:after.scene.selectedId},null,2));
+socket.close();

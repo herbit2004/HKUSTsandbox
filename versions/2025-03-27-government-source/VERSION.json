@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "2025-03-27-government-source",
+  "kind": "reconstructed-source-checkpoint",
+  "projectDate": "2026-09-08",
+  "governmentTileRevision": "2025-03-27",
+  "annotationDate": "2026-09-08",
+  "profile": "government-source",
+  "status": "archived",
+  "parent": null,
+  "reconstructedFrom": "2026-09-08-campus",
+  "notes": [
+    "292 original uncorrected government GLB tiles, verified against the retained render manifest; current-form, terrain-detail, mesh-detail, exterior replacement and texture replacement streams are disabled.",
+    "The application, complete building/indoor index, reference photos and evidence are independent copies compiled in 2026, not reconstructed 2025 facts.",
+    "Retained later derived resources remain dated supplemental evidence in this self-contained archive and are not used as the baseline exterior.",
+    "This source checkpoint is not an exact historical 2025 application snapshot; no such snapshot was retained."
+  ]
+}

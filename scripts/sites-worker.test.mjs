@@ -1,21 +1,30 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {test} from 'node:test';
-import {createWorker} from '../sites/worker.mjs';
+import fs from 'node:fs';
+const version=JSON.parse(fs.readFileSync(new URL('../versions/catalog.json',import.meta.url))).latest;
+const {createWorker}=await import('../versions/'+version+'/sites/worker.mjs');
 
 function fixture() {
   const body = 'abcdefghij';
   const sha256 = createHash('sha256').update(body).digest('hex');
-  const files = new Map([
-    ['/_sites/large-assets.json', JSON.stringify({'/model.glb': {bytes: 10, sha256, contentType: 'model/gltf-binary', parts: [{url: '/a', bytes: 6}, {url: '/b', bytes: 4}]}})],
-    ['/data/panoramas-online.json', JSON.stringify({nodes: [{asset_id: 'allowed-id'}]})],
-    ['/a', 'abcdef'], ['/b', 'ghij'], ['/', '<html>HKUST</html>'],
-  ]);
-  const env = {ASSETS: {async fetch(request) {
-    const value = files.get(new URL(request.url).pathname);
-    return new Response(value ?? 'Not found', {status: value === undefined ? 404 : 200});
-  }}};
-  return {env, sha256};
+  const blobs = new Map();
+  const routes = {};
+  for (const [path, value] of Object.entries({'/model.glb':body, '/data/panoramas-online.json':JSON.stringify({nodes:[{asset_id:'allowed-id'}]}), '/':'<html>HKUST</html>'})) {
+    const hash=createHash('sha256').update(value).digest('hex');
+    blobs.set('blobs/'+hash,Buffer.from(value));
+    routes[path]={bytes:Buffer.byteLength(value),sha256:hash,contentType:path.endsWith('.glb')?'model/gltf-binary':'application/json'};
+  }
+  blobs.set('active.json',Buffer.from(JSON.stringify({routes})));
+  const bucket={
+    async head(key){const b=blobs.get(key);return b?{size:b.length}:null;},
+    async get(key,options){const b=blobs.get(key);if(!b)return null;const r=options?.range;
+      return {size:b.length,json:async()=>JSON.parse(b),body:new Response(r?b.subarray(r.offset,r.offset+r.length):b).body};},
+    async put(key,body,options){const b=Buffer.from(await new Response(body).arrayBuffer());
+      if(options?.sha256 && createHash('sha256').update(b).digest('hex')!==options.sha256)throw new Error('Checksum mismatch');
+      blobs.set(key,b);return {size:b.length};},
+  };
+  return {sha256,blobs,env:{CAMPUS_ASSETS:bucket,ASSETS:{fetch:async()=>new Response('fallback')}}};
 }
 
 test('streaming restores exact bytes, type and length', async () => {
@@ -28,7 +37,7 @@ test('streaming restores exact bytes, type and length', async () => {
   assert.equal(createHash('sha256').update(Buffer.from(await response.arrayBuffer())).digest('hex'), sha256);
 });
 
-test('ranges across segments, suffixes, HEAD, ETag and unsatisfiable ranges', async () => {
+test('ranges, suffixes, HEAD, ETag and unsatisfiable ranges', async () => {
   const {env, sha256} = fixture();
   const worker = createWorker();
   const request = (headers, method = 'GET') => worker.fetch(new Request('https://campus.test/model.glb', {headers, method}), env);
@@ -62,4 +71,25 @@ test('rejects non-image and oversized panorama responses', async () => {
     const worker = createWorker(async () => new Response('bad', {headers}));
     assert.equal((await worker.fetch(new Request('https://campus.test/api/panorama?id=allowed-id'), env)).status, 502);
   }
+});
+
+test('import authorization, verified writes and atomic activation', async()=>{
+  const {env,blobs}=fixture();const worker=createWorker();
+  const req=(path,method,body,extra={})=>worker.fetch(new Request('https://campus.test/_sites/import/'+path,{method,body,headers:{'X-HKUST-Import-Token':'test-only',...extra}}),env);
+  assert.equal((await req('check','POST','[]')).status,404);
+  env.HKUST_SITE_IMPORT_TOKEN='test-only';
+  const text='replacement';const sha256=createHash('sha256').update(text).digest('hex');
+  const item={sha256,bytes:11,contentType:'text/plain'};
+  assert.deepEqual(await (await req('check','POST',JSON.stringify([item]))).json(),{missing:[sha256]});
+  assert.equal((await req('blob/'+sha256,'PUT','wrong',{'X-Asset-Bytes':'5'})).status,502);
+  assert.equal(blobs.has('blobs/'+sha256),false);
+  assert.equal((await req('blob/'+sha256,'PUT',text,{'X-Asset-Bytes':'11'})).status,200);
+  assert.deepEqual(await (await req('check','POST',JSON.stringify([item]))).json(),{missing:[]});
+  const release={profile:'full-local',release:'a'.repeat(64),routes:{'/':item,'/data/dataset-profile.json':item}};
+  assert.equal(await (await worker.fetch(new Request('https://campus.test/'),env)).text(),'<html>HKUST</html>');
+  assert.equal((await req('activate','PUT',JSON.stringify(release))).status,200);
+  assert.equal(await (await worker.fetch(new Request('https://campus.test/'),env)).text(),text);
+  assert.equal((await worker.fetch(new Request('https://campus.test/old-only'),env)).status,404);
+  delete env.HKUST_SITE_IMPORT_TOKEN;
+  assert.equal((await req('activate','PUT',JSON.stringify(release))).status,404);
 });

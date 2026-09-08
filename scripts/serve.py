@@ -2,13 +2,14 @@
 # coding: utf-8
 """Loopback-only static preview and allowlisted, on-demand official public panoramas."""
 import argparse,http.server,json,pathlib,urllib.request,urllib.parse,socketserver
+from versions import selected
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 PREVIEW=ROOT/'.preview/current'
-PUBLIC=ROOT/'public'
+PUBLIC=selected()/'public'
 DATA=json.loads((PUBLIC/'data/panoramas-online.json').read_text())
 ASSETS={n['asset_id'] for n in DATA['nodes']}
 class Handler(http.server.SimpleHTTPRequestHandler):
- def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(PREVIEW if PREVIEW.exists() else ROOT/'dist/client'),**kwargs)
+ def __init__(self,*args,**kwargs):super().__init__(*args,directory=str(PREVIEW if PREVIEW.exists() else selected()/'dist/client'),**kwargs)
  def do_GET(self):
   u=urllib.parse.urlsplit(self.path)
   if u.path=='/api/panorama':
@@ -28,6 +29,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 class Server(socketserver.ThreadingMixIn,http.server.HTTPServer):daemon_threads=True;allow_reuse_address=True
 if __name__=='__main__':
  parser=argparse.ArgumentParser();parser.add_argument('--port',type=int,default=4317);a=parser.parse_args()
- if not (ROOT/'dist/client/index.html').exists():raise SystemExit('Static build missing: run npm run build first')
+ if not ((PREVIEW if PREVIEW.exists() else selected()/'dist/client')/'index.html').exists():raise SystemExit('Static build missing: run npm run build first')
  print('HKUST Campus: http://127.0.0.1:%s/ (Ctrl-C to stop)'%a.port,flush=True)
  Server(('127.0.0.1',a.port),Handler).serve_forever()

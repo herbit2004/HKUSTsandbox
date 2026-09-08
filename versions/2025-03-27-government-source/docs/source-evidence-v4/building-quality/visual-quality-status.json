@@ -1,0 +1,976 @@
+{
+  "status": "in-progress",
+  "lastPublishedSnapshot": "20260905T231757226951Z",
+  "registryBuildingRecords": 54,
+  "finalAcceptedBuildings": 0,
+  "physicalBuildingDenominator": null,
+  "physicalIdentityInventory": "named-building-inventory.json",
+  "remainingUnsplitStaffTowerNames": 15,
+  "rows": [
+    {
+      "entityId": "building:b00000000000000000000003",
+      "name": "逸夫演艺中心",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "campus-22"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:b00000000000000000000001",
+      "name": "主学术大楼",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "campus-01"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:b00000000000000000000002",
+      "name": "郑裕彤楼",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "campus-18"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:b00000000000000000000005",
+      "name": "HKUST Jockey Club Institute for Advanced Study/Lo Ka Chung Building",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "campus-28"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:b00000000000000000000004",
+      "name": "李兆基商学大楼",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "campus-24"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:b00000000000000000000006",
+      "name": "盧家驄大學中心",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "campus-36"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:68ec6a9f32cc78a7ddf5ddb8",
+      "name": "本科生宿舍1座",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "ug-hall-1"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:68ec6b9632cc78a7ddf60beb",
+      "name": "本科生宿舍2座",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "ug-hall-2"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:68f9c3226e1e3a08098d2422",
+      "name": "Tsang Shiu Tim Sports Centre",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "campus-48"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:68f9de0b6e1e3a08099778dc",
+      "name": "Coastal Marine Lab",
+      "status": "pending-installed-native-multiangle-runtime",
+      "note": "完整原生源已安装；其实际投影以外约32.620平方米官方图面保留baseline，不强加邻近体育源，多角度外观待验。",
+      "evidence": [
+        "remaining-native-source-audit.json"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "coastal-marine-lab"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:6902ca00b253da38aa2bab32",
+      "name": "李达三叶耀珍伉俪李本俊会议大楼",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "campus-30"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:691adb789d35c25557ecab1f",
+      "name": "本科生宿舍10座",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:691c1bd903d92703c16b976f",
+      "name": "本科生宿舍12座",
+      "status": "needs-browser-retest-after-source-seam-fix",
+      "note": "第一轮旧摄影边缘露出、PV埋入屋面明确失败；第二轮实际源支持遮罩与PV已修，浏览器尚待验收。",
+      "evidence": [
+        "docs/screenshots/v4/halls-current-near-seam-failure.png",
+        "docs/source-evidence-v4/halls-current-first-stage.json",
+        "public/models/current-forms/halls-current/source-support-validation.json"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh",
+          "asset": "/models/current-forms/halls-current/ug-hall-12-current.glb",
+          "subtype": "photo_roof_based_current_form_approximation",
+          "featureId": "691c1bd903d92703c16b976f"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:691c1bf6923bee03b533d62b",
+      "name": "本科生宿舍11座 · DJI Hall",
+      "status": "needs-browser-retest-after-source-seam-fix",
+      "note": "第一轮旧摄影边缘露出、PV埋入屋面明确失败；第二轮实际源支持遮罩与PV已修，浏览器尚待验收。",
+      "evidence": [
+        "docs/screenshots/v4/halls-current-near-seam-failure.png",
+        "docs/source-evidence-v4/halls-current-first-stage.json",
+        "public/models/current-forms/halls-current/source-support-validation.json"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh",
+          "asset": "/models/current-forms/halls-current/ug-hall-11-current.glb",
+          "subtype": "photo_roof_based_current_form_approximation",
+          "featureId": "691c1bf6923bee03b533d62b"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:691c1c081c838d03d9a6dc21",
+      "name": "本科生宿舍13座",
+      "status": "needs-browser-retest-after-source-seam-fix",
+      "note": "第一轮旧摄影边缘露出、PV埋入屋面明确失败；第二轮实际源支持遮罩与PV已修，浏览器尚待验收。",
+      "evidence": [
+        "docs/screenshots/v4/halls-current-near-seam-failure.png",
+        "docs/source-evidence-v4/halls-current-first-stage.json",
+        "public/models/current-forms/halls-current/source-support-validation.json"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh",
+          "asset": "/models/current-forms/halls-current/ug-hall-13-current.glb",
+          "subtype": "photo_roof_based_current_form_approximation",
+          "featureId": "691c1c081c838d03d9a6dc21"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:69201b741c838d03d9fbe71b",
+      "name": "李家诚创科大楼",
+      "status": "pending-current-material-retest",
+      "note": "原图参考纹理已绑定、源楼层打开/收起已实测；待不重复照明的新材质最终近景确认。",
+      "evidence": [
+        "docs/screenshots/v4/innovation-textured-near.png",
+        "docs/source-evidence-v4/innovation-texture-floor-return.json"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh",
+          "asset": "/models/current-forms/innovation/innovation-current-approx.glb",
+          "subtype": "public_floor_based_current_form_approximation",
+          "featureId": "69201b741c838d03d9fbe71b"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:695377863568ed07f4fc7e0f",
+      "name": "水上活动中心",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "campus-53"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:6a85579974fe9a95803085ac",
+      "name": "本科生宿舍6座",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "ug-hall-6"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:campus-20",
+      "name": "医学教育及研究大楼",
+      "status": "construction-current-geometry-pending",
+      "note": "官方仍为建设阶段，竣工未确认；不以完工效果图或旧工地摄影冒充当前外观。",
+      "evidence": [
+        "current-construction-status.json"
+      ],
+      "installedModels": [],
+      "finalVisualAcceptance": false,
+      "expectedCompletion": "mid-2028"
+    },
+    {
+      "entityId": "building:catalog:campus-27",
+      "name": "Daniel & Mayce Yu 科研楼",
+      "status": "construction-current-geometry-pending",
+      "note": "官方仍为建设阶段，竣工未确认；不以完工效果图或旧工地摄影冒充当前外观。",
+      "evidence": [
+        "current-construction-status.json"
+      ],
+      "installedModels": [],
+      "finalVisualAcceptance": false,
+      "expectedCompletion": "Q4 2026"
+    },
+    {
+      "entityId": "building:catalog:campus-32",
+      "name": "曾超生楼",
+      "status": "pending-cross-area-retest",
+      "note": "原生外观两向实际可见；待新共享预算下的Auto/最高与切区返回确认。",
+      "evidence": [
+        "docs/screenshots/v4/tower-a-b-native-near.png",
+        "docs/screenshots/v4/tower-a-b-native-angle2-high.png"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "campus-32"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:campus-33",
+      "name": "林宝茹楼",
+      "status": "pending-cross-area-retest",
+      "note": "原生外观两向实际可见；待新共享预算下的Auto/最高与切区返回确认。",
+      "evidence": [
+        "docs/screenshots/v4/tower-a-b-native-near.png",
+        "docs/screenshots/v4/tower-a-b-native-angle2-high.png"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "campus-33"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:campus-35",
+      "name": "赛马会集贤楼",
+      "status": "needs-source-base-repair-and-browser-assessment",
+      "note": "四柱/大厅照片候选未启用。此前“树平面截柱底”已被正北像素诊断否定：四柱遮挡均0像素，短柱来自候选visibleY下界；大厅局部删面后遮挡不减，可能触及真实栏墙，试验不通过。",
+      "evidence": [
+        "ggt-front-base-candidate/README.md",
+        "ggt-front-base-candidate/occlusion-audit/qa.json",
+        "ggt-front-base-candidate/occlusion-audit/README.zh.md"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "campus-35"
+        }
+      ],
+      "finalVisualAcceptance": false,
+      "occlusionAudit": {
+        "status": "rejected-no-safe-removal",
+        "evidence": "ggt-front-base-candidate/occlusion-audit/qa.json",
+        "priorVisualHypothesis": "tree-plane-truncates-all-column-bottoms",
+        "priorHypothesisStatus": "disproved-for-north-front-view",
+        "candidateEnabled": false,
+        "history": "ggt-front-base-candidate/occlusion-audit/history/visual-quality-row.before-occlusion-audit.json"
+      }
+    },
+    {
+      "entityId": "building:catalog:campus-43",
+      "name": "校长宿舍",
+      "status": "source-artifacts-observed-browser-assessment-pending",
+      "note": "离线原生源已见照片烘焙树木、平面简化或透视拼接局限；实际可见程度、正常距离清晰度与邻楼接缝待浏览器同条件检查。",
+      "evidence": [
+        "northern-source-visual-review.json"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "campus-43"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:campus-44",
+      "name": "贵宾宿舍",
+      "status": "physical-identity-and-exterior-extent-limited",
+      "note": "现行贵宾宿舍服务名已确认；官方示意点靠近校长宿舍源域边缘，尚不足确定独立楼体、入口或用途分区。",
+      "evidence": [
+        "lodge-official-service-references/README.md",
+        "lodge-map-registration-candidates.json"
+      ],
+      "installedModels": [],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:campus-45",
+      "name": "水云轩",
+      "status": "physical-identity-and-exterior-extent-limited",
+      "note": "现行水云轩为9套服务公寓；当前北区官方图示不能移用历史Tower C南座身份，独立外观范围与楼层仍待核。",
+      "evidence": [
+        "lodge-official-service-references/README.md",
+        "lodge-map-registration-candidates.json"
+      ],
+      "installedModels": [],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:ug-hall-3",
+      "name": "本科生宿舍3座",
+      "status": "pending-installed-native-multiangle-runtime",
+      "note": "已补全6A+6C同源楼域并安装完整原生外观；12条补域回归通过，多角度真实外观仍待验。",
+      "evidence": [
+        "ug3-domain-qa.json",
+        "remaining-native-source-audit.json"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "ug-hall-3"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:ug-hall-4",
+      "name": "本科生宿舍4座",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "ug-hall-4"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:ug-hall-5",
+      "name": "本科生宿舍5座",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "ug-hall-5"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:ug-hall-7",
+      "name": "本科生宿舍7座",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "ug-hall-7"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:ug-hall-8",
+      "name": "本科生宿舍8座",
+      "status": "shared-exterior-installed-individual-boundary-limited",
+      "note": "共同官方楼域与一份完整原生源已安装；点击共同楼体后列两原宿舍实体，尚无逐座楼域分界，不按近点强分。",
+      "evidence": [
+        "ug3-shared-identity-integration.json",
+        "remaining-native-source-audit.json"
+      ],
+      "installedModels": [
+        {
+          "type": "reference",
+          "subtype": "shared_exterior_bundle_reference",
+          "asset": "/models/exteriors/manifest.json",
+          "featureId": "ug-halls-8-9-shared-source",
+          "ownerEntityId": "zone:hkust-cwb:ug-halls-8-9"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:ug-hall-9",
+      "name": "本科生宿舍9座",
+      "status": "shared-exterior-installed-individual-boundary-limited",
+      "note": "共同官方楼域与一份完整原生源已安装；点击共同楼体后列两原宿舍实体，尚无逐座楼域分界，不按近点强分。",
+      "evidence": [
+        "ug3-shared-identity-integration.json",
+        "remaining-native-source-audit.json"
+      ],
+      "installedModels": [
+        {
+          "type": "reference",
+          "subtype": "shared_exterior_bundle_reference",
+          "asset": "/models/exteriors/manifest.json",
+          "featureId": "ug-halls-8-9-shared-source",
+          "ownerEntityId": "zone:hkust-cwb:ug-halls-8-9"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:university-apartments-tower-c",
+      "name": "University Apartments Tower C",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:university-apartments-tower-d",
+      "name": "University Apartments Tower D",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-tower-1",
+      "name": "Staff Quarters Tower 1",
+      "status": "source-artifacts-observed-browser-assessment-pending",
+      "note": "离线原生源已见照片烘焙树木、平面简化或透视拼接局限；实际可见程度、正常距离清晰度与邻楼接缝待浏览器同条件检查。",
+      "evidence": [
+        "northern-source-visual-review.json"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-tower-1"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-tower-2",
+      "name": "Staff Quarters Tower 2",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-tower-2"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-tower-3",
+      "name": "Staff Quarters Tower 3",
+      "status": "source-artifacts-observed-browser-assessment-pending",
+      "note": "离线原生源已见照片烘焙树木、平面简化或透视拼接局限；实际可见程度、正常距离清晰度与邻楼接缝待浏览器同条件检查。",
+      "evidence": [
+        "northern-source-visual-review.json"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-tower-3"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-tower-4",
+      "name": "Staff Quarters Tower 4",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-tower-4"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-house-1",
+      "name": "Staff Quarters House 1",
+      "status": "source-artifacts-observed-browser-assessment-pending",
+      "note": "离线原生源已见照片烘焙树木、平面简化或透视拼接局限；实际可见程度、正常距离清晰度与邻楼接缝待浏览器同条件检查。",
+      "evidence": [
+        "northern-source-visual-review.json"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-house-1"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-house-2",
+      "name": "Staff Quarters House 2",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-house-2"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-house-3",
+      "name": "Staff Quarters House 3",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-house-3"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-house-4",
+      "name": "Staff Quarters House 4",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-house-4"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-house-5",
+      "name": "Staff Quarters House 5",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-house-5"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-house-6",
+      "name": "Staff Quarters House 6",
+      "status": "source-artifacts-observed-browser-assessment-pending",
+      "note": "离线原生源已见照片烘焙树木、平面简化或透视拼接局限；实际可见程度、正常距离清晰度与邻楼接缝待浏览器同条件检查。",
+      "evidence": [
+        "northern-source-visual-review.json"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-house-6"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-house-7",
+      "name": "Staff Quarters House 7",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-house-7"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-house-8",
+      "name": "Staff Quarters House 8",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-house-8"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-block-p",
+      "name": "Staff Quarters Block P",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-block-p"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-block-q",
+      "name": "Staff Quarters Block Q",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-block-q"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-block-r",
+      "name": "Staff Quarters Block R",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-block-r"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-block-s",
+      "name": "Staff Quarters Block S",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-block-s"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-apartments-1-12",
+      "name": "Staff Quarters Apartments 1-12",
+      "status": "source-artifacts-observed-browser-assessment-pending",
+      "note": "离线原生源已见照片烘焙树木、平面简化或透视拼接局限；实际可见程度、正常距离清晰度与邻楼接缝待浏览器同条件检查。",
+      "evidence": [
+        "northern-source-visual-review.json"
+      ],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-apartments-1-12"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-apartments-13-24",
+      "name": "Staff Quarters Apartments 13-24",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-apartments-13-24"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-apartments-25-36",
+      "name": "Staff Quarters Apartments 25-36",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-apartments-25-36"
+        }
+      ],
+      "finalVisualAcceptance": false
+    },
+    {
+      "entityId": "building:catalog:staff-quarters-apartments-37-48",
+      "name": "Staff Quarters Apartments 37-48",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "尚未完成与Academic同等正常认路距离的逐栋多角度、近区加载与切区返回验收。",
+      "evidence": [],
+      "installedModels": [
+        {
+          "type": "mesh_group",
+          "asset": "/models/exteriors/manifest.json",
+          "subtype": "exterior_bundle",
+          "featureId": "staff-quarters-apartments-37-48"
+        }
+      ],
+      "finalVisualAcceptance": false
+    }
+  ],
+  "limitations": [
+    "Registry building count is not the final unique physical building denominator.",
+    "Installed model, source projection and successful parse are not visual acceptance.",
+    "Hall second-round model and shared resource pool changes have not yet received browser acceptance.",
+    "UG Hall V rear material contains baked tree-canopy photography; see next-current-form-priority-audit.md."
+  ],
+  "publishedRuntimeAcceptance": "2026-09-08 migration verified: the sole project root is /Users/herbit/Desktop/code/HKUSTsandbox. The complete full-local build is served at http://127.0.0.1:4317/ from snapshot 20260908T072159666057Z. Fresh Chrome rendering, current resource bytes and new process cwd were verified; no lock-screen blocker. A clean GitHub clone downloaded the government-baseline-v1 Release with SHA-256 verification, passed npm ci/typecheck/build and rendered its explicitly limited public dataset. The old path is only a compatibility symlink. No building final acceptance status or canonical denominator changed. Earlier restart-stage and historical acceptance notes follow: 2026-09-08 runtime note: the latest existing build is served at http://127.0.0.1:4317/ from snapshot 20260908T065458099517Z. Chrome initial campus rendering was verified without a lock-screen blocker. This verifies service and initial rendering only; no building receives final visual acceptance and whole-campus quality remains incomplete. The recorded snapshot 20260905T231757226951Z and 54 registry building rows are historical acceptance metadata, as is the prior note: 'Pending; current Mac lock prevents actual WebGL revalidation.' They do not describe current runtime state. The current registry count of 52 is not the canonical physical-building denominator; original rows, evidence and the unresolved denominator are preserved. Continue whole-campus paired evidence acceptance under GOAL.md G25.",
+  "workingTreeNativeExteriorGroups": 47,
+  "workingTreeNativeSourceObjects": 89,
+  "physicalGroupRows": [
+    {
+      "physicalDomainId": "physical-domain:ib1000:1101775236",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "官方聚合楼域；区间中的编号尚无逐座边界证据。完整原生源已安装，未完成真实多角度验收。",
+      "evidence": [],
+      "finalVisualAcceptance": false,
+      "entityId": "zone:catalog:campus-39",
+      "name": "Staff Quarters Towers 5–7",
+      "installedBundleId": "staff-quarters-towers-5-7"
+    },
+    {
+      "physicalDomainId": "physical-domain:ib1000:1101776570",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "官方聚合楼域；区间中的编号尚无逐座边界证据。完整原生源已安装，未完成真实多角度验收。",
+      "evidence": [],
+      "finalVisualAcceptance": false,
+      "entityId": "zone:catalog:campus-40",
+      "name": "Staff Quarters Towers 8–11",
+      "installedBundleId": "staff-quarters-towers-8-11"
+    },
+    {
+      "physicalDomainId": "physical-domain:ib1000:1101776670",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "官方聚合楼域；区间中的编号尚无逐座边界证据。完整原生源已安装，未完成真实多角度验收。",
+      "evidence": [],
+      "finalVisualAcceptance": false,
+      "entityId": "zone:catalog:campus-41",
+      "name": "Staff Quarters Towers 12–14",
+      "installedBundleId": "staff-quarters-towers-12-14"
+    },
+    {
+      "physicalDomainId": "physical-domain:ib1000:1101776664",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "官方聚合楼域；区间中的编号尚无逐座边界证据。完整原生源已安装，未完成真实多角度验收。",
+      "evidence": [],
+      "finalVisualAcceptance": false,
+      "entityId": "zone:catalog:campus-42",
+      "name": "Staff Quarters Towers 15–19",
+      "installedBundleId": "staff-quarters-towers-15-17"
+    },
+    {
+      "physicalDomainId": "physical-domain:ib1000:1101776842",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "官方聚合楼域；区间中的编号尚无逐座边界证据。完整原生源已安装，未完成真实多角度验收。",
+      "evidence": [],
+      "finalVisualAcceptance": false,
+      "entityId": "zone:catalog:campus-42",
+      "name": "Staff Quarters Towers 15–19",
+      "installedBundleId": "staff-quarters-towers-18-19"
+    },
+    {
+      "physicalDomainId": "physical-domain:ib1000:1810084462",
+      "status": "pending-multiangle-runtime-acceptance",
+      "note": "一个官方共同物理域、两宿舍身份、零新增独立建筑；一套原生源与预算，成员分界待核，真实多角度尚未验收。",
+      "evidence": [
+        "shared-halls-runtime-audit/qa.json",
+        "shared-halls-8-9-ownership-review.json"
+      ],
+      "finalVisualAcceptance": false,
+      "entityId": "zone:hkust-cwb:ug-halls-8-9",
+      "name": "本科生宿舍 VIII／IX",
+      "installedBundleId": "ug-halls-8-9-shared-source"
+    }
+  ],
+  "unresolvedAggregatePhysicalDomains": 6,
+  "versionViewAcceptance": {
+    "version": "2025-03-27-government-source",
+    "status": "pending-runtime-check",
+    "scope": "Original government source exterior with September 2026 independent entity and indoor annotations. Existing publishedRuntimeAcceptance and building evidence below are retained historical records of the patched view, not acceptance of this source view."
+  }
+}

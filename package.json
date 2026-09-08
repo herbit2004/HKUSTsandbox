@@ -6,14 +6,17 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "dev": "vinext dev",
-    "build": "vinext build",
+    "dev": "python3 scripts/versions.py exec npm run dev",
+    "build": "python3 scripts/versions.py exec npm run build",
     "build:sites": "python3 scripts/build-sites.py",
     "start": "python3 scripts/serve.py --port 4317",
-    "lint": "oxlint",
-    "format": "oxfmt",
+    "lint": "python3 scripts/versions.py exec npm run lint",
+    "format": "python3 scripts/versions.py exec npm run format",
     "serve": "python3 scripts/serve.py",
-    "check": "tsc --noEmit"
+    "check": "python3 scripts/versions.py exec npm run check",
+    "versions": "python3 scripts/versions.py list",
+    "version:fork": "python3 scripts/versions.py fork",
+    "preview": "python3 scripts/preview-update.py"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",

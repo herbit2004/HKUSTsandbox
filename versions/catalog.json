@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "latest": "2026-09-08-campus",
+  "versions": [
+    {
+      "id": "2025-03-27-government-source",
+      "path": "2025-03-27-government-source",
+      "kind": "reconstructed-source-checkpoint"
+    },
+    {
+      "id": "2026-09-08-campus",
+      "path": "2026-09-08-campus",
+      "kind": "project-checkpoint"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const port=Number(process.env.HKUST_CDP_PORT||9222);
+const pages=await (await fetch(`http://127.0.0.1:${port}/json`)).json();
+const page=pages.find(item=>item.type==='page'&&item.url.startsWith('http://127.0.0.1:4317/'));if(!page)throw new Error('Fixed preview page missing');
+const ws=new WebSocket(page.webSocketDebuggerUrl);await new Promise((ok,bad)=>{ws.addEventListener('open',ok,{once:true});ws.addEventListener('error',bad,{once:true})});
+let id=0;const waiting=new Map();ws.addEventListener('message',event=>{const m=JSON.parse(String(event.data));if(!m.id||!waiting.has(m.id))return;const p=waiting.get(m.id);waiting.delete(m.id);m.error?p.reject(new Error(JSON.stringify(m.error))):p.resolve(m.result)});
+const send=(method,params={})=>new Promise((resolve,reject)=>{const n=++id;waiting.set(n,{resolve,reject});ws.send(JSON.stringify({id:n,method,params}))});
+const run=async expression=>(await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true})).result.value;
+await run(`(()=>{for(const selector of ['.topbar','.rail','.detail-card','.view-heading','.scene-controls','.map-bottom','.load-status','.world-labels'])for(const element of document.querySelectorAll(selector))element.style.visibility='hidden';return true})()`);
+await new Promise(r=>setTimeout(r,300));
+const state=await run(`JSON.parse(document.querySelector('.atlas-world').dataset.sceneState)`);
+const png=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+const screenshot='docs/screenshots/v4/ivillage-multiangle-u73/clean-current.png';await fs.writeFile(path.join(root,screenshot),Buffer.from(png.data,'base64'));
+await run(`(()=>{for(const element of document.querySelectorAll('[style*="visibility: hidden"]'))element.style.visibility='';return true})()`);
+console.log(JSON.stringify({screenshot,camera:state.camera,target:state.target,viewport:state.viewport},null,2));ws.close();

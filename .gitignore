@@ -39,3 +39,19 @@ work/
 /docs/*.json
 /docs/*.txt
 /docs/source-evidence-*/
+
+# Each version owns its complete local materials. Never publish private materials in Git.
+/versions/*/public/
+/versions/*/source-*/
+/versions/*/docs/*.json
+/versions/*/docs/*.txt
+/versions/*/docs/source-evidence-*/
+/versions/*/docs/screenshots/
+/versions/*/docs/**/*.png
+/versions/*/docs/**/*.jpg
+/versions/*/docs/**/*.jpeg
+/versions/*/docs/**/*.webp
+/versions/*/docs/**/*.glb
+/versions/*/docs/**/*.pdf
+/versions/*/scripts/registry-v3/input-entity-registry.json
+/versions/*/INVENTORY.local.json

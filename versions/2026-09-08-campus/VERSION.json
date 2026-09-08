@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "2026-09-08-campus",
+  "kind": "project-checkpoint",
+  "projectDate": "2026-09-08",
+  "governmentTileRevision": "2025-03-27",
+  "annotationDate": "2026-09-08",
+  "profile": "full-local",
+  "status": "current",
+  "parent": null,
+  "sourceCommitBeforeReorganization": "981c32db9729b4641c6554bdeb947c20363cde68",
+  "notes": [
+    "Contains all retained code, runtime assets, building/entity data, indoor information, source inputs and local QA evidence at this checkpoint.",
+    "The date is the project checkpoint, not a claim that every source was captured in September 2026.",
+    "Building visual acceptance remains governed by GOAL.md and the per-building evidence."
+  ]
+}
