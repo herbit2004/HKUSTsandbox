@@ -21,7 +21,7 @@ python3 scripts/versions.py --version YYYY-MM-DD-campus verify
 python3 scripts/versions.py exec python3 scripts/sync-building-quality-state.py --render-only
 ```
 
-`fork` 先核对父节点已有封存清单（未封存的初次节点先建立清单），再逐文件复制并核验，最后更改 latest。复制失败不会切换 latest，也不会覆盖任何历史副本。`INVENTORY.local.json` 是包含完整私有文件 SHA-256 的本机清单，不上传 GitHub。新副本进入编辑后，旧节点不再回写；archived 节点拒绝重写封存清单。父节点若已有未记录的改动，fork 会停止，不会默默认可这些改动。
+`fork` 先核对父节点已有封存清单（未封存的初次节点先建立清单），再逐文件复制并核验，最后更改 latest。复制失败不会切换 latest，也不会覆盖任何历史副本。`INVENTORY.local.json` 是包含完整私有文件 SHA-256 的本机清单，不上传 GitHub。新副本进入编辑后，旧节点不再回写；archived 节点拒绝重写封存清单。父节点若已有未记录的改动，fork 会停止，不会默认认可这些改动。
 
 按需官方全景仍依赖远端服务。本机已下载图片和完整节点索引各自保存在副本中；未下载的网络内容不属于已封存材料，不声称它们已离线归档。
 

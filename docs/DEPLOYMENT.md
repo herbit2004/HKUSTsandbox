@@ -64,7 +64,7 @@ curl -I http://127.0.0.1:8080/
 5. 将既有 Sites 访问凭据置于进程环境 `HKUST_SITES_CHECK_TOKEN`，临时导入秘密置于 `HKUST_SITE_IMPORT_TOKEN`，执行 `node scripts/import-sites-runtime.mjs https://hkust-sandbox.herbit2004.chatgpt.site`。凭据不得写进文件、Git 配置、日志或命令示例。
 6. 导入器分批检查资源，流式上传缺失对象，由 R2 校验 SHA-256；全部对象大小和存在性通过后，才原子切换 active 清单。只上传最新运行资源，不上传其他版本、source-* 或历史 QA 档案。
 7. `node scripts/verify-sites-runtime.mjs https://hkust-sandbox.herbit2004.chatgpt.site` 核对完整 profile、校验索引、主要模型/贴图/室内/资料和全景。完成真实浏览器检查。
-8. 移除临时导入环境秘密，并重新部署同一保存版本以应用环境变更。未配置秘密时导入端点返回 404。保留现有访问设置与 R2 数据。
+8. 将临时导入环境秘密的值设为空字符串（仍标记为 secret），并重新部署同一保存版本以应用环境变更。然后携带旧秘密向 `/_sites/import/check` POST 空数组，必须返回 404。2026-09-08 实测仅删除配置项并重新部署后，底层运行环境仍接受旧值，因此不能把配置列表中消失当作撤销成功。空值由 Worker 明确拒绝；保留现有访问设置与 R2 数据。
 
 部署回执和完整核查清单位于 `.local/sites-*.json`，不包含凭据，不作为全校逐栋视觉验收通过的证据。运行素材保留原 URL，允许原来的按区域有界懒加载；上站不会补足本来尚未完成的建筑质量工作。
 
