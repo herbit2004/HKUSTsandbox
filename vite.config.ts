@@ -1,0 +1,6 @@
+import vinext from 'vinext';
+import {defineConfig} from 'vite';
+import tailwindcss from '@tailwindcss/postcss';
+import fs from 'node:fs';
+const allowed=new Set(JSON.parse(fs.readFileSync(new URL('./public/data/panoramas-online.json',import.meta.url),'utf8')).nodes.map((n:any)=>n.asset_id));
+export default defineConfig({css:{postcss:{plugins:[tailwindcss()]}},plugins:[{name:'official-public-panorama-preview',configureServer(server){server.middlewares.use(async(req,res,next)=>{if(!req.url?.startsWith('/api/panorama?'))return next();const id=new URL(req.url,'http://localhost').searchParams.get('id');if(!allowed.has(id)){res.statusCode=404;res.end();return}try{const response=await fetch('https://navigate.ust.hk/path/api/app/assets/panorama/id?id='+id,{signal:AbortSignal.timeout(40000)});if(!response.ok||!response.headers.get('content-type')?.startsWith('image/'))throw Error('Source unavailable');const body=Buffer.from(await response.arrayBuffer());if(body.length>32*1024*1024)throw Error('Oversized response');res.setHeader('Content-Type',response.headers.get('content-type')!);res.setHeader('Cache-Control','private,max-age=86400');res.end(body)}catch{res.statusCode=502;res.end('Official panorama unavailable')}})}},vinext()],server:{host:'127.0.0.1',port:4317,strictPort:true,watch:{usePolling:true,ignored:['**/public/**','**/source-*/**','**/docs/**']}}});

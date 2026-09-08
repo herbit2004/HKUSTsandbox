@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {pathToFileURL,fileURLToPath} from 'node:url';
+import path from 'node:path';
+const project=process.argv[2]||fileURLToPath(new URL('../../../../',import.meta.url));
+const req=createRequire(project+'/package.json'),THREE=req('three');
+const {GLTFLoader}=await import(pathToFileURL(req.resolve('three/addons/loaders/GLTFLoader.js')).href);
+const base=path.dirname(fileURLToPath(import.meta.url)),m=JSON.parse(fs.readFileSync(base+'/manifest.json','utf8'));
+const raw=fs.readFileSync(base+'/'+m.url);const gltf=await new GLTFLoader().parseAsync(raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength),'');
+let meshes=0,triangles=0,textures=0;const roles={};
+gltf.scene.traverse(o=>{if(!o.isMesh)return;meshes++;const p=o.geometry.getAttribute('position');assert.ok([...p.array].every(Number.isFinite));triangles+=(o.geometry.index?.count||p.count)/3;assert.equal(o.userData.entityId,m.entityId);assert.equal(o.userData.approximation,true);roles[o.userData.representationRole]=(roles[o.userData.representationRole]||0)+1;for(const material of Array.isArray(o.material)?o.material:[o.material])if(material.map)textures++;});
+const b=new THREE.Box3().setFromObject(gltf.scene);assert.deepEqual({min:b.min.toArray(),max:b.max.toArray()},m.bounds);assert.equal(meshes,m.meshes);assert.equal(triangles,m.triangles);assert.equal(textures,0);assert.ok(Math.abs(b.max.y-b.min.y-8.5)<.0001);
+const report={status:'pass',loader:'Three.js GLTFLoader.parseAsync',network:false,entityId:m.entityId,meshes,triangles,textures,bounds:m.bounds,height:b.max.y-b.min.y,publishedHeight:8.5,roles,precisionLimit:'Only published height constrains the photo-reference shape; positions and shape are not a measured CAD reconstruction.'};
+fs.writeFileSync(base+'/glb-validation.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));

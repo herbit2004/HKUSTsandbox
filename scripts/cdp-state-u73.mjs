@@ -1,0 +1,22 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const port=Number(process.env.HKUST_CDP_PORT||9222);
+const base=process.env.HKUST_BASE||'http://127.0.0.1:4318/';
+const pages=await (await fetch(`http://127.0.0.1:${port}/json`)).json();
+const page=[...pages].reverse().find(item=>item.type==='page'&&item.url.startsWith(base));
+if(!page)throw new Error(`No ${base} page on CDP port ${port}`);
+const socket=new WebSocket(page.webSocketDebuggerUrl);
+await new Promise((resolve,reject)=>{socket.addEventListener('open',resolve,{once:true});socket.addEventListener('error',reject,{once:true});});
+let nextId=0;const pending=new Map();
+socket.addEventListener('message',event=>{const message=JSON.parse(String(event.data));if(!message.id||!pending.has(message.id))return;const target=pending.get(message.id);pending.delete(message.id);message.error?target.reject(new Error(JSON.stringify(message.error))):target.resolve(message.result);});
+const send=(method,params={})=>new Promise((resolve,reject)=>{const id=++nextId;pending.set(id,{resolve,reject});socket.send(JSON.stringify({id,method,params}));});
+const expression=`(()=>({readyState:document.readyState,title:document.title,bodyText:(document.body?.innerText||'').slice(0,1200),inputs:[...document.querySelectorAll('input')].map(input=>({aria:input.getAttribute('aria-label'),value:input.value,type:input.type})),world:!!document.querySelector('.atlas-world'),sceneState:document.querySelector('.atlas-world')?.dataset.sceneState||'',errors:window.__HKUST_ERRORS__||null}))()`;
+const evaluated=await send('Runtime.evaluate',{expression,returnByValue:true});
+const shot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
+const screenshot='docs/screenshots/v4/ivillage-multiangle-u73/cdp-current-u73.png';
+await fs.writeFile(path.join(root,screenshot),Buffer.from(shot.data,'base64'));
+console.log(JSON.stringify({page:{id:page.id,url:page.url,title:page.title},state:evaluated.result.value,screenshot},null,2));
+socket.close();

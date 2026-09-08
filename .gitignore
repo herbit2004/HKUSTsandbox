@@ -1,0 +1,35 @@
+# Installed dependencies, builds and local history
+node_modules/
+.next/
+.vinext/
+.wrangler/
+dist/
+.preview/
+.local/
+__pycache__/
+*.py[cod]
+*.tsbuildinfo
+.DS_Store
+.env*
+!.env.example
+*.pem
+*.log
+coverage/
+outputs/
+work/
+# Installed data and local-only evidence. Selected authored tools are explicitly tracked.
+/public/
+/source-geodata/
+/source-pathadvisor/
+/source-photo-references/
+/docs/source-evidence-v4/
+/docs/screenshots/
+/docs/**/*.png
+/docs/**/*.jpg
+/docs/**/*.jpeg
+/docs/**/*.webp
+/docs/**/*.glb
+/docs/**/*.pdf
+
+# Historical raw registry input is local data, not source code.
+/scripts/registry-v3/input-entity-registry.json

@@ -1,0 +1,9 @@
+# Optional historical data-processing tools; not required by serve.py.
+numpy>=1.26
+Pillow>=10
+pyproj>=3.6
+shapely>=2
+rasterio>=1.3
+affine>=2.4
+scipy>=1.11
+websocket-client>=1.7

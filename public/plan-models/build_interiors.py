@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+"""Build evidence-labeled drawing stacks, not invented physical interiors.
+Each GLB is a pair of triangles bearing an unchanged official floor-plan PNG.
+Only Python standard library + NumPy + Pillow are used, no network.
+"""
+from pathlib import Path
+import json,struct,hashlib,shutil
+import numpy as np
+from PIL import Image
+R=Path(__file__).resolve().parent;(R/'glb').mkdir(exist_ok=True);(R/'images').mkdir(exist_ok=True)
+DATE='2026-09-05';LIB='https://lbcone.hkust.edu.hk/floorplans/';HEIGHT='https://library.hkust.edu.hk/news-events/news/where-lg2';SHAW='https://shaw-auditorium.hkust.edu.hk/sites/default/files/2025-06/floor_plans_simple_one_20250609.pdf'
+LIBDATA=[('1f','1/F',128,'2024-05-21',[(.602,.752,'Lift A'),(.384,.752,'Lift B')]),('gf','G/F',123,'2026-03-04',[(.623,.681,'Lift A'),(.405,.681,'Lift B'),(.212,.736,'Lift C'),(.789,.536,'Entry gate'),(.552,.468,'Information Commons')]),('lg1','LG1',118,'2026-08-27',[(.602,.690,'Lift A'),(.380,.690,'Lift B'),(.193,.731,'Lift C'),(.824,.565,'LC Help Desk'),(.812,.725,'Classroom A')]),('lg3','LG3',113,'2025-08-28',[(.606,.752,'Lift A'),(.387,.752,'Lift B'),(.200,.786,'Lift C'),(.327,.777,'LG3-10 Seminar Room')]),('lg4','LG4',108,'2025-08-28',[(.607,.748,'Lift A'),(.387,.749,'Lift B'),(.198,.784,'Lift C'),(.139,.646,'LG4-26 Multi-Function Room')]),('lg5','LG5',103,'2026-03-04',[(.298,.328,'Entry gate — inset'),(.287,.414,'Help Desk — inset'),(.356,.477,'LG5-03 — inset'),(.397,.477,'LG5-02 — inset'),(.438,.477,'LG5-01 — inset')])]
+limitations_common=['This is a 3D arrangement of official floor-plan drawings, not surveyed room geometry or a walkable interior.','Horizontal drawing width is normalized to 100 diagram units. Physical width, scale and registration to the exterior building have not been established.','Image north direction is not georeferenced. Do not place the boards inside the geospatial building model as if they were aligned floor slabs.','No walls, doors, furniture volumes, ceiling heights or floor thicknesses were invented. Features remain readable in the original plan texture.','Landmark locations are manual approximate pixel transcriptions of explicitly labeled plan features; they are for finding labels on the plan, not navigable coordinates.']
+projects=[]
+for typ in ['library','shaw']:
+ floors=[]
+ if typ=='library':
+  for code,label,height,updated,marks in LIBDATA:
+   p=Path('/tmp/hkust-interior-photo-references/plans')/f'library-{code}.png';floors.append({'id':f'library-{code}','label':label,'sourcePath':str(p),'sourceUrl':f'https://lbcone.hkust.edu.hk/floorplans/images/{code}.png','sourcePage':LIB,'sourceImageVersionDate':updated,'sourceImageVersionDateMeaning':'Date parsed from official floor-plan image version parameter; not a construction or survey date.','historicalElevationMeters':height,'height':height-103,'displayHeight':height-103,'explodedHeight':(height-103)/5*18,'containsEnlargedInset':code=='lg5','landmarks':[{'u':u,'v':v,'label':l,'accuracy':'approximate label location on source image'} for u,v,l in marks]})
+  proj={'building':'campus-04','name':'李兆基图书馆','name_en':'Lee Shau Kee Library','mode':'diagrammatic-floorplan-stack-with-historical-elevation-reference','defaultFloor':'library-gf','verticalMode':'historical-reference','heightReference':{'source':HEIGHT,'articlePublished':'2026-03-03','historicPlanningGuideDate':'1988-12-16','baseReferenceMeters':103,'note':'Original planning levels 128,123,118,113,108 correspond to 1/F,G/F,LG1,LG3,LG4; article also relates level103 toLG5. These are historical above-sea-level references, not current as-built survey heights.','physicalFloorToFloorHeightsCertified':False},'limitations':limitations_common+['LG5 source drawing contains an enlarged inset; do not interpret the inset as vertically registered to the other floor drawings.','The public library floor set does not contain LG2. Do not invent an LG2 library floor.','Historical elevation differences do not imply that every interconnecting building wing or car-park floor is at the same height.'],'sources':[LIB,HEIGHT]}
+ else:
+  for i,label in enumerate(['G/F','1/F','2/F']):
+   marks=[[(.349,.327,'Lift 1'),(.545,.309,'Lift 2'),(.565,.656,'Lift 3'),(.408,.467,'Main Hall Stage'),(.504,.467,'Main Hall Stalls')],[(.370,.290,'Lift 1'),(.580,.273,'Lift 2'),(.602,.643,'Lift 3'),(.614,.467,'Main Hall Circle (101)')],[(.370,.309,'Lift 1'),(.576,.289,'Lift 2'),(.599,.662,'Lift 3'),(.611,.481,'Main Hall Balcony (201)')]][i]
+   floors.append({'id':f'shaw-{i}','label':label,'sourcePath':f'/tmp/hkust-wayfinding/shaw-{i+1}.png','sourceUrl':SHAW,'sourcePage':i+1,'sourceImageVersionDate':'2025-06-09','sourceImageVersionDateMeaning':'Date in official floor-plan PDF filename.','historicalElevationMeters':None,'height':None,'displayHeight':i*12,'explodedHeight':i*24,'containsEnlargedInset':False,'landmarks':[{'u':u,'v':v,'label':l,'accuracy':'approximate label location on source image'} for u,v,l in marks]})
+  proj={'building':'campus-22','name':'逸夫演艺中心','name_en':'Shaw Auditorium','mode':'diagrammatic-floorplan-stack','defaultFloor':'shaw-0','verticalMode':'ordinal-diagram-spacing','heightReference':{'source':None,'baseReferenceMeters':None,'note':'Floor-to-floor heights are unknown. Display gaps 12 and exploded gaps 24 are diagram units, not meters.','physicalFloorToFloorHeightsCertified':False},'limitations':limitations_common+['The floor plan shows the main hall across three levels. It does not mean three separate main halls or three opaque physical floors filling the hall void.','The hall seating is reconfigurable; this asset does not claim a permanent seating arrangement.'],'sources':[SHAW,'https://shaw-auditorium.hkust.edu.hk/main-hall']}
+ proj.update({'checkedAt':DATE,'coordinateSystem':{'axes':'x: image right; y: stack up; z: image down','units':'diagram units; library y uses separately labeled historical elevation differences','imageWidthDiagramUnits':100,'physicalWidthMeters':None,'horizontalGeoreferenced':False,'imageRegistrationAcrossFloors':'not established; boards are centered by image canvas, not building survey control points'},'floors':floors})
+ projects.append(proj)
+
+class Glb:
+ def __init__(self,name):
+  self.bin=bytearray();self.d={'asset':{'version':'2.0','generator':'HKUST evidence-based drawing stack builder','copyright':'Official plan artwork belongs to HKUST and its respective departments. Source URLs in node extras.','extras':{'modelType':'diagrammatic drawing boards, not physical BIM','checkedAt':DATE}},'extensionsUsed':['KHR_materials_unlit'],'buffers':[{'byteLength':0}],'bufferViews':[],'accessors':[],'materials':[],'images':[],'textures':[],'samplers':[{'magFilter':9729,'minFilter':9987,'wrapS':33071,'wrapT':33071}],'meshes':[],'nodes':[],'scenes':[{'name':name,'nodes':[]}],'scene':0}
+ def view(self,data,target=None):
+  while len(self.bin)%4:self.bin.append(0)
+  v={'buffer':0,'byteOffset':len(self.bin),'byteLength':len(data)}
+  if target:v['target']=target
+  self.bin.extend(data);self.d['bufferViews'].append(v);return len(self.d['bufferViews'])-1
+ def access(self,ar,typ,component,target):
+  ai=len(self.d['accessors']);self.d['accessors'].append({'bufferView':self.view(ar.tobytes(),target),'componentType':component,'count':len(ar),'type':typ,'min':ar.min(axis=0).reshape(-1).astype(float).tolist(),'max':ar.max(axis=0).reshape(-1).astype(float).tolist()});return ai
+ def add_floor(self,f,height=0):
+  p=Path(f['sourcePath']);raw=p.read_bytes();im=Image.open(p);w=100.;dep=100*im.height/im.width
+  pos=np.array([[-w/2,0,-dep/2],[-w/2,0,dep/2],[w/2,0,dep/2],[w/2,0,-dep/2]],dtype='<f4');uv=np.array([[0,0],[0,1],[1,1],[1,0]],dtype='<f4');nor=np.array([[0,1,0]]*4,dtype='<f4');ind=np.array([0,1,2,0,2,3],dtype='<u2')
+  pa=self.access(pos,'VEC3',5126,34962);ua=self.access(uv,'VEC2',5126,34962);na=self.access(nor,'VEC3',5126,34962);ia=self.access(ind,'SCALAR',5123,34963)
+  ii=len(self.d['images']);self.d['images'].append({'bufferView':self.view(raw),'mimeType':'image/png','name':f['id']+' original plan'});ti=len(self.d['textures']);self.d['textures'].append({'sampler':0,'source':ii});mi=len(self.d['materials']);self.d['materials'].append({'name':f['id']+' unlit original plan','doubleSided':True,'pbrMetallicRoughness':{'baseColorTexture':{'index':ti},'metallicFactor':0,'roughnessFactor':1},'extensions':{'KHR_materials_unlit':{}}});mesh=len(self.d['meshes']);self.d['meshes'].append({'name':f['id'],'primitives':[{'attributes':{'POSITION':pa,'NORMAL':na,'TEXCOORD_0':ua},'indices':ia,'material':mi,'mode':4}]});ni=len(self.d['nodes']);self.d['nodes'].append({'mesh':mesh,'name':f['id'],'translation':[0,height,0],'extras':{'label':f['label'],'sourceUrl':f['sourceUrl'],'sourcePage':f['sourcePage'],'type':'official floor-plan drawing board','physicalWidthMeters':None,'displayHeight':height,'historicalElevationMeters':f['historicalElevationMeters'],'containsEnlargedInset':f['containsEnlargedInset']}});self.d['scenes'][0]['nodes'].append(ni)
+  return {'width':w,'depth':dep,'sourcePixelSize':[im.width,im.height],'imageSha256':hashlib.sha256(raw).hexdigest(),'triangles':2}
+ def save(self,path):
+  self.d['buffers'][0]['byteLength']=len(self.bin);self.bin+=b'\0'*((-len(self.bin))%4);j=json.dumps(self.d,separators=(',',':'),ensure_ascii=False).encode();j+=b' '*((-len(j))%4);out=struct.pack('<4sII',b'glTF',2,12+8+len(j)+8+len(self.bin))+struct.pack('<I4s',len(j),b'JSON')+j+struct.pack('<I4s',len(self.bin),b'BIN\0')+self.bin;path.write_bytes(out);return {'bytes':len(out),'sha256':hashlib.sha256(out).hexdigest()}
+
+validation=[]
+for proj in projects:
+ combined=Glb(proj['name']+' diagram stack')
+ for f in proj['floors']:
+  single=Glb(f['id']);f.update(single.add_floor(f));file=R/'glb'/f"{f['id']}.glb";f.update(single.save(file));f['url']='glb/'+file.name;f['image']='images/'+Path(f['sourcePath']).name;shutil.copy2(f['sourcePath'],R/f['image']);combined.add_floor(f,f['displayHeight']);M=np.eye(4);M[1,3]=f['displayHeight'];f['matrix']=M.T.reshape(-1).tolist();f['expandedMatrix']=f['matrix'].copy();f['expandedMatrix'][13]=f['explodedHeight'];f['placementNote']='Single-floor GLB has y=0. Apply matrix OR set y=displayHeight; combined GLB already has node translations.'
+  f.pop('sourcePath')
+ path=R/'glb'/f"{proj['building']}-stack.glb";proj['combinedGlb']={'url':'glb/'+path.name,**combined.save(path),'placement':'Node translations already included; address floors by node.name and replace node.position.y to expand.'};(R/f"{proj['building']}.json").write_text(json.dumps(proj,ensure_ascii=False,indent=2))
+manifest={'version':1,'checkedAt':DATE,'assetType':'evidence-based interior drawing stacks','buildings':projects,'notice':'图纸叠层模型；非实测室内 BIM。平面比例未校准，不用于量距。LG5 含放大插图，Shaw 层高未知。'}
+(R/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
+# Structural and source-texture identity tests.
+for p in (R/'glb').glob('*.glb'):
+ b=p.read_bytes();assert b[:4]==b'glTF' and struct.unpack_from('<I',b,8)[0]==len(b);jl,tag=struct.unpack_from('<I4s',b,12);assert tag==b'JSON';d=json.loads(b[20:20+jl]);bo=20+jl+8;assert b[bo-4:bo]==b'BIN\0';assert len(d['nodes'])==len(d['meshes'])==len(d['images']);expected=6 if p.name=='campus-04-stack.glb' else 3 if p.name=='campus-22-stack.glb' else 1;assert len(d['nodes'])==expected
+ for node in d['nodes']:
+  assert np.isfinite(node['translation']).all();floor=next(f for pro in projects for f in pro['floors'] if f['id']==node['name']);pr=d['meshes'][node['mesh']]['primitives'][0];a=d['accessors'][pr['attributes']['POSITION']];v=d['bufferViews'][a['bufferView']];xyz=np.frombuffer(b,dtype='<f4',count=12,offset=bo+v['byteOffset']).reshape(4,3);assert np.isfinite(xyz).all() and np.all(xyz[:,1]==0);assert np.cross(xyz[1]-xyz[0],xyz[2]-xyz[0])[1]>0;m=d['materials'][pr['material']];im=d['images'][d['textures'][m['pbrMetallicRoughness']['baseColorTexture']['index']]['source']];iv=d['bufferViews'][im['bufferView']];raw=b[bo+iv['byteOffset']:bo+iv['byteOffset']+iv['byteLength']];assert hashlib.sha256(raw).hexdigest()==floor['imageSha256'];Image.open(__import__('io').BytesIO(raw)).verify()
+ validation.append({'file':p.name,'nodes':len(d['nodes']),'triangles':2*len(d['nodes']),'bytes':len(b),'embeddedSourceImageBytesIdentical':True,'upwardTriangleWinding':True,'finitePositions':True,'declaredPhysicalScale':False})
+report={'status':'pass','checkedAt':DATE,'buildings':2,'officialFloorDrawings':9,'individualFloorGlbCount':9,'combinedGlbCount':2,'allResourcesEmbedded':True,'allSourceImagesByteIdentical':True,'modelsAreDiagrammaticNotBim':True,'files':validation};(R/'validation.json').write_text(json.dumps(report,ensure_ascii=False,indent=2));print(json.dumps(report,ensure_ascii=False,indent=2))
